@@ -21,7 +21,7 @@ push_package() {
 
     package_cloud push ${repo} "${build_dir}/${pkg}" || {
         echo "Removing existing package..."
-        package_cloud yank ${repo} ${pkg} > /dev/null >&1
+        package_cloud yank ${repo} ${pkg}
         echo "Existing package removed!"
         
         echo "Pushing new package: ${pkg}"
