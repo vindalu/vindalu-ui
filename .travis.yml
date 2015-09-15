@@ -4,7 +4,7 @@ services:
 before_install:
 - docker pull euforia/fpm
 install:
-- gem install package_cloud --no-ri --no-rdoc
+- gem install package_cloud --no-ri --no-rdoc --verbose
 script:
 - ./scripts/build.sh
 - ls -l ./build
