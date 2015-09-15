@@ -1,0 +1,20 @@
+sudo: required
+services:
+- docker
+before_install:
+- docker pull euforia/fpm
+- gem install package_cloud --no-ri --no-rdoc
+install:
+- true
+script:
+- ./scripts/build.sh
+- ls -l ./build
+deploy:
+- provider: script
+  skip_cleanup: true
+  script: ./scripts/push-packages.sh
+  on:
+    branch: master
+env:
+  global:
+    secure: tumDxwY+Lb19rKshHGX2tMpO30yZKrsEegzIRTaPx0kszGMiCoGwnuBr7alAwN7Nf1ve2W+j+jdDMb+oKVJFTlw+yGz4DpCygM1npz3pXRP8OJycXXe/1hZxSx1pgDn/OFIsQG1o+5+iPqMH2LY/0EKYcUN+XRI7i/L/ed7lzxy/Ex5ocx2SOO5s3e21OcIl8UtqGJqYoWFNQU8mVC72cgJ9/SvkaNOEI/F62o9r2sAuRL/f7o2l/XdOKjiPf2eyImwxBFY/Kgcnkfrvw40HZ8kWWVas8CKJF0gX+YNXMC71GzKVI5aMai4jyeY0Xtvl5o1zUvEs4QiNmvbfOtCKE3z8iibxwj9FxWXC2gZLrqJw1DqJWBsw7tkgdrQ2NmvML/1TneKEtTCdVG3GI2ayYRiTXQ+3KokeKXW3O9JcUKm8u1gc5fKDHBl5NYNuZMXMdB61i4kGIaMyQ065CftE3g1LH7OpRszIL9JLTE0L4V6hF/Y/CRDage7ez7NyWM93PzRHfUfMoVlRNJ8w2hrXdFGS8OpuPuspvHjSxtWaLuzCkriHy79dcjbwVZaNPtS9bagR+vOwLm4uWQVcwttKepMgeC+It1SVGDhyjiBtMH10JsAS3YmaO6Fv8U5kJytU9E/sMxyqalpm8UAxo7AJ11dpiPh/40EN/5Xt8fJyhsQ=

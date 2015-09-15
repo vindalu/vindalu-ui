@@ -1,0 +1,106 @@
+<div class="row" style="margin:0">
+    <div class="col-md-3" style="padding:0">
+        <div asset-type-list></div>
+    </div>
+    <div class="col-md-9" style="padding:0;overflow-y:scroll;">
+        <div style="margin-left:15px;margin-bottom:15px" ng-switch="session">
+            <div class="section-header">
+                <table><tr>
+                    <td><a style="padding-left:10px" href="#/{{asset.type}}">{{asset.type}}</a> / {{asset.id}}</td>
+                    <td class="text-center" style="font-size:11px">
+                        <span>Created By : </span><span style="color:#999;margin-right:10px;">{{asset.data.created_by}}</span>
+                        <span>Updated By : </span><span style="color:#999;margin-right:10px;">{{asset.data.updated_by}}</span>
+                        <span>Last Updated : </span><span style="color:#999">{{asset.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
+                    </td>
+                    <td class="text-right" >
+                        <a data-toggle="tooltip" data-placement="bottom" title="Show Versions"  href="#/{{asset.type}}/{{asset.id}}/versions" class="btn btn-sm section-header-btn">
+                            <span class="glyphicon glyphicon-fa fa fa-history"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="bottom" title="Save" class="btn btn-sm section-header-btn" ng-if="session!=null" ng-click="updateAsset()" >
+                            <span class="glyphicon glyphicon-save"></span>
+                        </a>
+                        <a class="btn btn-sm section-header-btn" ng-if="session!=null" data-toggle="modal" data-target="#delete-asset-modal" title="Delete">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                </tr></table>
+            </div>
+            <div ng-switch-when="null">
+                <table style="width:100%;font-size:13px;" class="table table-condensed table-bordered">
+                    <tr ng-repeat="(attr, val) in asset.data">
+                        <td style="color:#666">{{attr}}</td><td>{{val}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div ng-switch-default>
+                <table style="width:100%;" class="table table-condensed table-bordered">
+                    <tr ng-repeat="(attr, val) in asset.data">
+                        <td style="color:#666;vertical-align:middle">{{attr}}</td>
+                        <td ng-switch="attr">
+                            <span ng-switch-when="updated_by" style="padding:0 5px">{{val}}</span>
+                            <span ng-switch-when="created_by" style="padding:0 5px">{{val}}</span>
+                            <span ng-switch-default>
+                                <select ng-if="enforcedFields[attr]&&enforcedFields[attr]!=null" ng-options="field for field in enforcedFields[attr]" ng-model="asset.data[attr]" class="form-control input-sm"></select>
+                                <div class="input-group input-group-sm" ng-if="enforcedFields[attr]==undefined">
+                                    <input type="text" class="form-control" ng-model="asset.data[attr]" style="border-radius:4px;">
+                                    <span class="input-group-addon" style="border:none;background:none;position:relative;left:2px;">
+                                        <a ng-click="removeField(attr)" href="javascript:void(0)" class="remove-field-btn"><span class="glyphicon glyphicon-remove"></span></a>
+                                    </span>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="text-right">
+                <button ng-if="session!=null" class="btn btn-sm btn-default" data-toggle="modal" data-target="#add-field-modal"  style="color:#666">
+                    <span class="glyphicon glyphicon-plus"></span><span> Add Field</span> 
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add-field-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">New <span style="color:#666">{{asset.type}}</span> field</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+            <span class="input-group-addon" style="background:none;border:none;">Name</span>
+            <input type="text" class="form-control" ng-model="newFieldName" style="border-radius:4px;">
+        </div>
+        <div style="padding:2px;"></div>
+        <div class="input-group">
+            <span class="input-group-addon" style="background:none;border:none;padding-right:18px">Type</span>
+            <select class="form-control" ng-options="t for t in ['String','Number','Object']" ng-model="newFieldType"></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click="addNewField()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="delete-asset-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Deleting <span style="color:#666">{{asset.type}}/{{asset.id}}</span></h4>
+      </div>
+      <div class="modal-body">
+        Are you sure?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" ng-click="deleteAsset()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

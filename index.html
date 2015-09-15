@@ -1,0 +1,61 @@
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="libs/c3/c3.min.css">
+        <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="libs/font-awesome-4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+
+        <script type="text/javascript" src="libs/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="libs/bootstrap/js/bootstrap.min.js"></script>
+
+        <script src="libs/d3.v3.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="libs/c3/c3.min.js"></script>
+
+        <script type="text/javascript" src="libs/angularjs/angular.min.js"></script>
+        <script type="text/javascript" src="libs/angularjs/angular-route.min.js"></script>
+        <script type="text/javascript" src="libs/angularjs/angular-resource.min.js"></script>
+
+        <script type="text/javascript" src="app/app.js"></script>
+        <script type="text/javascript" src="app/root/Root.js"></script>
+        <script type="text/javascript" src="app/login/Login.js"></script>
+        <script type="text/javascript" src="app/asset/Asset.js"></script>
+        <script type="text/javascript" src="app/assettype/AssetType.js"></script>
+        <script type="text/javascript" src="app/status/Status.js"></script>
+    </head>
+    <body>
+        <div id="stage" ng-controller="defaultController">
+            <div id="page-header">
+                <div class="row" style="margin:0;padding:0">
+                    <div class="col-md-4" style="padding:0">
+                        <h4>
+                            <a href="#/" style="margin-right:15px">Inventory</a>
+                            <a style="margin-right:15px" href="https://github.com/euforia/vindaloo#documentation">Docs</a>
+                            <a style="margin-right:15px" href="#/status">Status</a>
+                        </h4>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="alert alert-{{userNotificationData.status}}" style="padding: 9px; margin:0">{{userNotificationData.data}}</div>
+                    </div>
+                    <div class="col-md-4 text-right" style="padding:0" ng-switch="session">
+                        <h4 ng-switch-when="null">
+                            <a href="#/login?redirect={{currUrlPath}}"><span class="glyphicon glyphicon-user"></span></a>
+                        </h4>
+                        <h4 ng-switch-default>
+                            <span class="dropdown">
+                                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span style="padding-right:15px">{{session.username}}</span><span class="glyphicon glyphicon-user"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right" style="margin-top:20px;min-width:100px">
+                                    <li class="text-center"><a ng-click="logout()" href="javascript:void(0)">Logout</a></li>
+                                </ul>
+                            </span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div style="margin:0 20px;" ng-view></div>
+        </div>
+    </body>
+</html>
