@@ -13,19 +13,21 @@ deb_pkg=`ls ${build_dir} | grep amd64.deb`
 rpm_repo="vindalu/vindalu/el/6"
 deb_repo="vindalu/vindalu/ubuntu/trusty"
 
+pc_bin="/usr/bin/package_cloud"
+
 RETVAL=0
 
 push_package() {
     repo=$1
     pkg=$2
 
-    package_cloud push ${repo} "${build_dir}/${pkg}" || {
+    ${pc_bin} push ${repo} "${build_dir}/${pkg}" || {
         echo "Removing existing package..."
-        package_cloud yank ${repo} ${pkg}
+        ${pc_bin} yank ${repo} ${pkg}
         echo "Existing package removed!"
         
         echo "Pushing new package: ${pkg}"
-        package_cloud push ${repo} "${build_dir}/${pkg}"
+        ${pc_bin} push ${repo} "${build_dir}/${pkg}"
         
         RETVAL=$?
         [ $RETVAL -ne 0 ] && {
@@ -37,6 +39,10 @@ push_package() {
 }
 
 main() {
+    which package_cloud || {
+        gem install package_cloud --no-ri --no-rdoc --verbose
+        pc_bin=`ruby -rubygems -e 'puts Gem.user_dir'`/bin/package_cloud
+    }
 
     if [ "${rpm_pkg}" != "" ]; then 
         push_package $rpm_repo "${rpm_pkg}"
