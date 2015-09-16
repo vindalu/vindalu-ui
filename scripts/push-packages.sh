@@ -41,7 +41,11 @@ push_package() {
 main() {
     which package_cloud || {
         gem install package_cloud --no-ri --no-rdoc --verbose
-        pc_bin=`ruby -rubygems -e 'puts Gem.user_dir'`/bin/package_cloud
+    }
+
+    which package_cloud || {
+        echo "package_cloud not found!"
+        RETVAL=1
     }
 
     if [ "${rpm_pkg}" != "" ]; then 

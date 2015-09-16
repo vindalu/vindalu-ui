@@ -1,5 +1,5 @@
 sudo: required
-language: ruby
+
 services:
 - docker
 before_install:
@@ -9,6 +9,8 @@ install:
 script:
 - ./scripts/build.sh
 - ls -l ./build
+before_deploy:
+- rvm use default
 deploy:
 - provider: script
   skip_cleanup: true
