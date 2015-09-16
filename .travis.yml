@@ -5,7 +5,9 @@ services:
 before_install:
 - docker pull euforia/fpm
 install:
-- sudo gem install package_cloud --no-ri --no-rdoc --verbose
+- gem install package_cloud --no-ri --no-rdoc --verbose
+- sudo ln -sv $(ruby -rubygems -e 'puts Gem.user_dir')/bin/package_cloud /usr/local/bin/package_cloud
+
 script:
 - ./scripts/build.sh
 - ls -l ./build
