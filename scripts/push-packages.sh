@@ -13,7 +13,7 @@ deb_pkg=`ls ${build_dir} | grep amd64.deb`
 rpm_repo="vindalu/vindalu/el/6"
 deb_repo="vindalu/vindalu/ubuntu/trusty"
 
-pc_bin="/usr/bin/package_cloud"
+pc_bin="package_cloud"
 
 RETVAL=0
 
