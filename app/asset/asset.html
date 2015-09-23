@@ -7,12 +7,11 @@
             <div class="section-header">
                 <table><tr>
                     <td><a style="padding-left:10px" href="#/{{asset.type}}">{{asset.type}}</a> / {{asset.id}}</td>
-                    <td class="text-center" style="font-size:11px">
-                        <span>Created By : </span><span style="color:#999;margin-right:10px;">{{asset.data.created_by}}</span>
+                    <td class="text-right" style="font-size:11px">
                         <span>Updated By : </span><span style="color:#999;margin-right:10px;">{{asset.data.updated_by}}</span>
                         <span>Last Updated : </span><span style="color:#999">{{asset.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
                     </td>
-                    <td class="text-right" >
+                    <td class="text-right"  style="width:125px;">
                         <a data-toggle="tooltip" data-placement="bottom" title="Show Versions"  href="#/{{asset.type}}/{{asset.id}}/versions" class="btn btn-sm section-header-btn">
                             <span class="glyphicon glyphicon-fa fa fa-history"></span>
                         </a>
@@ -35,9 +34,10 @@
             <div ng-switch-default>
                 <table style="width:100%;" class="table table-condensed table-bordered">
                     <tr ng-repeat="(attr, val) in asset.data">
-                        <td style="color:#666;vertical-align:middle">{{attr}}</td>
+                        <td style="color:#666;vertical-align:middle;white-space:nowrap">{{attr}}</td>
                         <td ng-switch="attr">
                             <span ng-switch-when="updated_by" style="padding:0 5px">{{val}}</span>
+                            <span ng-switch-when="created_on" style="padding:0 5px">{{val|date:'HH:mm:ss MMM dd, yyyy'}}</span>
                             <span ng-switch-when="created_by" style="padding:0 5px">{{val}}</span>
                             <span ng-switch-default>
                                 <select ng-if="enforcedFields[attr]&&enforcedFields[attr]!=null" ng-options="field for field in enforcedFields[attr]" ng-model="asset.data[attr]" class="form-control input-sm"></select>
@@ -88,15 +88,13 @@
 </div>
 
 <div class="modal fade" id="delete-asset-modal">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Deleting <span style="color:#666">{{asset.type}}/{{asset.id}}</span></h4>
       </div>
-      <div class="modal-body">
-        Are you sure?
-      </div>
+      <div class="modal-body">Are you sure you want to delete {{asset.id}}?</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-danger" ng-click="deleteAsset()">Delete</button>

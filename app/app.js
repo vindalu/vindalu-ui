@@ -92,7 +92,7 @@ app.filter('objectLength', function() {
     function($rootScope, $location, $scope, CredCache, Authenticator, $timeout) {
         /* This is the top level controller (all encompassing) */
 
-        var _timer;
+        var _timer, alertDisplayTime = 3750;
 
         $scope.userNotificationData = {};
 
@@ -116,7 +116,7 @@ app.filter('objectLength', function() {
 
             $timeout(function() {
                 $scope.userNotificationData = {};
-            }, 3000);
+            }, alertDisplayTime);
         } 
         
         $rootScope.$on('user.authenticated', function(e) {

@@ -54,6 +54,24 @@ angular.module('asset', [])
         $scope.newFieldName = "";
         $scope.newFieldType = "String";
 
+
+        var getResource = function() {
+            AssetService.get($routeParams.asset_type, $routeParams.asset)
+            .success(function(rslt) {
+            
+                $scope.asset = rslt;
+                _originalAsset = angular.copy(rslt);
+            
+            }).error(function(err) {
+            
+                $scope.showUserNotification({
+                    status: 'danger',
+                    data: 'Get failed: ' + err
+                });
+            
+            });
+        }
+
         $scope.addNewField = function() {
             switch($scope.newFieldType) {
                 case "Number":
@@ -78,7 +96,10 @@ angular.module('asset', [])
 
         $scope.updateAsset = function() {
             if ( angular.equals(_originalAsset, $scope.asset) ) {
-                console.log('No changes to save!');
+                $scope.showUserNotification({
+                    status: 'danger',
+                    data: 'No changes to save!'
+                });
             } else {
                 AssetService.updateAssetDetails($scope.asset.type, $scope.asset.id, $scope.asset.data)
                 .success(function(rslt) {
@@ -93,6 +114,7 @@ angular.module('asset', [])
                         status: 'danger',
                         data: 'Update failed: ' + e
                     });
+                    getResource();
                 });
             }
         }
@@ -113,20 +135,7 @@ angular.module('asset', [])
 
         var init = function() {
         
-            AssetService.get($routeParams.asset_type, $routeParams.asset)
-            .success(function(rslt) {
-            
-                $scope.asset = rslt;
-                _originalAsset = angular.copy(rslt);
-            
-            }).error(function(err) {
-            
-                $scope.showUserNotification({
-                    status: 'danger',
-                    data: 'Get failed: ' + err
-                });
-            
-            });
+            getResource();
 
             $timeout(function() { $("[data-toggle='tooltip']").tooltip(); }, 1000);
         }
