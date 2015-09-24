@@ -15,9 +15,11 @@ angular.module('asset', [])
             return $http.get(Configuration.api_prefix + "/" + assetType + '/' + assetId + '/versions?diff')
         }
 
-        var updateAssetDetails = function(assetType, assetId, assetData) {
+        var updateAssetDetails = function(assetType, assetId, assetData, deleteFields) {
+            var delParams = "delete_fields="+deleteFields.join(",");
+
             return $http({
-                url: Configuration.api_prefix + "/" + assetType + '/' + assetId,
+                url: Configuration.api_prefix + "/" + assetType + '/' + assetId + '?' + delParams,
                 method: 'PUT',
                 headers: Authenticator.getAuthHeader(),
                 data: angular.toJson(assetData)
@@ -47,7 +49,7 @@ angular.module('asset', [])
         require: '?ngModel',
         link: function(scope, elem, attrs, ctrl) {
             if (!ctrl) return;
-            
+
             ctrl.$formatters.push(function(val) {
                 if (val === null ) return null;
 
@@ -63,19 +65,33 @@ angular.module('asset', [])
                             return val;
                         }
                     default:
+                        ctrl.$setValidity('dynamicInput', true);
                         return val;
                 }
             });
 
             ctrl.$parsers.unshift(function(val) {
-                try {
-                    var v = angular.fromJson(val);
-                    ctrl.$setValidity('dynamicInput', true);
-                    return v;
-                } catch(e) {
-                    ctrl.$setValidity('dynamicInput', false);
-                    return ctrl.$modelValue;
+                var valType = typeof ctrl.$modelValue;
+                switch(valType) {
+                    case "object":
+                        try {
+                            var v = angular.fromJson(val);
+                            ctrl.$setValidity('dynamicInput', true);
+                            return v;
+                        } catch(e) {
+                            ctrl.$setValidity('dynamicInput', false);
+                            return ctrl.$modelValue;
+                        }
+                    default:
+                        ctrl.$setValidity('dynamicInput', true);
+                        return ctrl.$modelValue;
+                        break;
                 }
+            });
+            
+            scope.$watch(function(){return ctrl.$modelValue;}, function(n,o) {
+                if (n == null && n == o) return;
+                $(elem).elastic();
             });
         }
     };
@@ -93,6 +109,7 @@ angular.module('asset', [])
         $scope.newFieldName = "";
         $scope.newFieldType = "String";
 
+        $scope.fieldsToDelete = [];
 
         var getResource = function() {
             AssetService.get($routeParams.asset_type, $routeParams.asset)
@@ -129,24 +146,38 @@ angular.module('asset', [])
             $('#add-field-modal').modal('hide');
         }
 
-        $scope.removeField = function(name) {
-            $scope.asset.data[name] = null;
+        $scope.deleteField = function(name) {
+            $scope.fieldsToDelete.push(name);
+        }
+
+        $scope.undeleteField = function(name) {
+            var idx = $scope.fieldsToDelete.indexOf(name);
+            if (idx >= 0) $scope.fieldsToDelete.splice(idx, 1);
+        }
+
+        $scope.fieldSetToDelete = function(f) {
+            for (var i=0; i<$scope.fieldsToDelete.length; i++) {
+                if (f == $scope.fieldsToDelete[i]) return true;
+            }
+            return false;
         }
 
         $scope.updateAsset = function() {
-            if ( angular.equals(_originalAsset, $scope.asset) ) {
+            if ( angular.equals(_originalAsset, $scope.asset) && $scope.fieldsToDelete.length < 1) {
                 $scope.showUserNotification({
                     status: 'danger',
                     data: 'No changes to save!'
                 });
             } else {
-                AssetService.updateAssetDetails($scope.asset.type, $scope.asset.id, $scope.asset.data)
+                AssetService.updateAssetDetails($scope.asset.type, $scope.asset.id, $scope.asset.data, $scope.fieldsToDelete)
                 .success(function(rslt) {
           
                     $scope.showUserNotification({
                         status: 'success',
                         data: rslt.id+ ' updated!'
                     });
+
+                    getResource();
 
                 }).error(function(e) {
                     $scope.showUserNotification({
