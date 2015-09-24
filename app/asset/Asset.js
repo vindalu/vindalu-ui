@@ -41,6 +41,45 @@ angular.module('asset', [])
         }
     }
 ])
+.directive('dynamicInput', [function() {
+    return {
+        restrict: 'A',
+        require: '?ngModel',
+        link: function(scope, elem, attrs, ctrl) {
+            if (!ctrl) return;
+            
+            ctrl.$formatters.push(function(val) {
+                if (val === null ) return null;
+
+                var valType = typeof val;
+                switch(valType) {
+                    case "object":
+                        try {
+                            var v = angular.toJson(val, true);
+                            ctrl.$setValidity('dynamicInput', true);
+                            return v;
+                        } catch(e) {
+                            ctrl.$setValidity('dynamicInput', false);
+                            return val;
+                        }
+                    default:
+                        return val;
+                }
+            });
+
+            ctrl.$parsers.unshift(function(val) {
+                try {
+                    var v = angular.fromJson(val);
+                    ctrl.$setValidity('dynamicInput', true);
+                    return v;
+                } catch(e) {
+                    ctrl.$setValidity('dynamicInput', false);
+                    return ctrl.$modelValue;
+                }
+            });
+        }
+    };
+}])
 .controller('assetController', [
     '$scope', '$location', '$routeParams', 'AssetService', 'Configuration', '$timeout',
     function($scope, $location, $routeParams, AssetService, Configuration, $timeout) {
@@ -91,7 +130,7 @@ angular.module('asset', [])
         }
 
         $scope.removeField = function(name) {
-            delete $scope.asset.data[name];
+            $scope.asset.data[name] = null;
         }
 
         $scope.updateAsset = function() {

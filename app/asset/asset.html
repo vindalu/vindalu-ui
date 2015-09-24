@@ -33,7 +33,7 @@
             </div>
             <div ng-switch-default>
                 <table style="width:100%;" class="table table-condensed table-bordered">
-                    <tr ng-repeat="(attr, val) in asset.data">
+                    <tr ng-repeat="(attr, val) in asset.data" ng-class="{danger: val===null}">
                         <td style="color:#666;vertical-align:middle;white-space:nowrap">{{attr}}</td>
                         <td ng-switch="attr">
                             <span ng-switch-when="updated_by" style="padding:0 5px">{{val}}</span>
@@ -42,7 +42,7 @@
                             <span ng-switch-default>
                                 <select ng-if="enforcedFields[attr]&&enforcedFields[attr]!=null" ng-options="field for field in enforcedFields[attr]" ng-model="asset.data[attr]" class="form-control input-sm"></select>
                                 <div class="input-group input-group-sm" ng-if="enforcedFields[attr]==undefined">
-                                    <input type="text" class="form-control" ng-model="asset.data[attr]" style="border-radius:4px;">
+                                    <textarea type="text" class="form-control" ng-model="asset.data[attr]" style="border-radius:4px;" dynamic-input></textarea>
                                     <span class="input-group-addon" style="border:none;background:none;position:relative;left:2px;">
                                         <a ng-click="removeField(attr)" href="javascript:void(0)" class="remove-field-btn"><span class="glyphicon glyphicon-remove"></span></a>
                                     </span>
