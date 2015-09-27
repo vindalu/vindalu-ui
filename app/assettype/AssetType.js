@@ -140,6 +140,11 @@ angular.module('asset.type', [])
             }
 
             scope.refreshAssetTypeList();
+
+            //console.log(scope.activeAssetType);
+            scope.$on('$routeChangeSuccess', function(evt, nxt, curr) {
+                scope.activeAssetType = $routeParams.asset_type;
+            });
         }
     }
 }]);

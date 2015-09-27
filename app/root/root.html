@@ -1,18 +1,20 @@
+<div style="padding:15px;"></div>
 <div class="row" style="margin:0">
-    <div class="col-md-3" style="padding:0">
-        <div asset-type-list></div>
-    </div>
-    <div class="col-md-9" style="padding:0;overflow-y:scroll;">
+    <div class="col-md-12" style="padding:0;overflow-y:scroll;">
         <div class="graphs-panel">
-            <div class="section-header text-center">Distribution</div>
-            <div donut-chart class="root-chart"></div>
-            <div ng-if="currDataset.length<1" class="text-center alert alert-warning">
-                <strong>No Asset Types!</strong> Add an asset to view data.
+            <div class="section-header text-center" style="font-weight:bold;font-size:20px">Distribution</div>
+            <div style="padding: 10px 0">
+                <div donut-chart class="root-chart"></div>
+                <div ng-if="currDataset.length<1" class="text-center alert alert-warning">
+                    <strong>No Asset Types!</strong> Add an asset to view data.
+                </div>
             </div>
-            <div class="section-header text-center">Count</div>
-            <div bar-chart class="root-chart"></div>
-            <div ng-if="currDataset.length<1" class="text-center alert alert-warning">
-                <strong>No Asset Types!</strong> Add an asset to view data.
+            <div class="section-header text-center" style="font-weight:bold">Count</div>
+            <div style="padding: 10px 0">
+                <div bar-chart class="root-chart"></div>
+                <div ng-if="currDataset.length<1" class="text-center alert alert-warning">
+                    <strong>No Asset Types!</strong> Add an asset to view data.
+                </div>
             </div>
         </div>
     </div>

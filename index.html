@@ -26,36 +26,60 @@
     </head>
     <body>
         <div id="stage" ng-controller="defaultController">
-            <div id="page-header">
-                <div class="row" style="margin:0;padding:0">
-                    <div class="col-md-4" style="padding:0">
-                        <h4>
-                            <a href="#/" style="margin-right:15px">Inventory</a>
-                            <a style="margin-right:15px" href="https://github.com/euforia/vindaloo#documentation">Docs</a>
-                            <a style="margin-right:15px" href="#/status">Status</a>
-                        </h4>
+            <div style="position:fixed;top:0;left:360px;right:0px;height:100%;overflow-y:scroll" ng-view></div>
+
+            <div style="position:fixed;top:0;left:60px;width:300px;height:100%;overflow-y:scroll;background:#444">
+                <div asset-type-list></div>
+            </div>
+
+            <div id="sidebar">
+                <div style="height:60px;text-align:center;display:table;width:100%" title="Vindalu">
+                    <div style="vertical-align:middle;display:table-cell;font-size:20px">
+                        <a href="#/">
+                            <span class="glyphicon glyphicon-home"></span>
+                        </a>
                     </div>
-                    <div class="col-md-4 text-center">
-                        <div class="alert alert-{{userNotificationData.status}} small" style="padding: 9px; margin:0">{{userNotificationData.data}}</div>
+                </div>
+                <div style="height:60px;text-align:center;display:table;width:100%" title="">
+                    <div style="vertical-align:middle;display:table-cell;font-size:20px" ng-switch="session">
+                        <a ng-switch-when="null" href="#/login?redirect={{currUrlPath}}">
+                            <div class="glyphicon glyphicon-user"></div>
+                            <div style="font-size:10px;">login</div>
+                        </a>
+                        <span class="dropdown" ng-switch-default>
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                                <div class="glyphicon glyphicon-user"></div>
+                                <div style="font-size:10px;">{{session.username}}</div>
+                            </a>
+                            <ul class="dropdown-menu" style="min-width:100px">
+                                <li class="text-center">
+                                    <a style="color:#666"ng-click="logout()" href="javascript:void(0)">Logout</a>
+                                </li>
+                            </ul>
+                        </span>
                     </div>
-                    <div class="col-md-4 text-right" style="padding:0" ng-switch="session">
-                        <h4 ng-switch-when="null">
-                            <a href="#/login?redirect={{currUrlPath}}"><span class="glyphicon glyphicon-user"></span></a>
-                        </h4>
-                        <h4 ng-switch-default>
-                            <span class="dropdown">
-                                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
-                                    <span style="padding-right:15px">{{session.username}}</span><span class="glyphicon glyphicon-user"></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-right" style="margin-top:20px;min-width:100px">
-                                    <li class="text-center"><a ng-click="logout()" href="javascript:void(0)">Logout</a></li>
-                                </ul>
-                            </span>
-                        </h4>
+                </div>
+                <div style="height:60px;text-align:center;display:table;width:100%" title="Docs">
+                    <div style="vertical-align:middle;display:table-cell;font-size:20px">
+                        <a href="https://github.com/euforia/vindaloo#documentation">
+                            <div class="glyphicon glyphicon-file"></div>
+                            <div style="font-size:10px;">docs</div>
+                        </a>
+                    </div>
+                </div>
+                <div style="height:60px;text-align:center;display:table;width:100%" title="Status">
+                    <div style="vertical-align:middle;display:table-cell;font-size:20px">
+                        <a href="#/status">
+                            <div class="glyphicon glyphicon-tasks"></div>
+                            <div style="font-size:10px;">status</div>
+                        </a>
                     </div>
                 </div>
             </div>
-            <div style="margin:0 20px;" ng-view></div>
+
+            <div id="notification-pane" ng-show="showNotification()">
+                <div class="alert alert-{{userNotificationData.status}} text-center" style="padding: 9px; margin:0;" role="alert">{{userNotificationData.data}}</div>
+            </div>
         </div>
     </body>
 </html>

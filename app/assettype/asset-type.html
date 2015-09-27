@@ -1,63 +1,62 @@
 <div class="row" style="margin:0">
-    <div class="col-md-3" style="padding:0">
-        <div asset-type-list></div>
-    </div>
-    <div class="col-md-9" style="padding:0">
-        <div style="margin-left:15px;">
-            <div class="section-header text-right" style="padding-left:0;padding-right:0">
-                <table><tr>
-                    <td style="padding-left:10px">{{assetType}}</td>
-                    <td class="text-right small">
-                        <!--<a title="New {{assetType}}" class="btn btn-sm section-header-btn" ng-if="session!=null"><span class="glyphicon glyphicon-plus"></span></a>-->
-                        <span class="dropdown btn btn-sm section-header-btn" title="{{assetType}} Properties">
-                            <span class="dropdown-toggle" data-toggle="dropdown">
-                                <a href="javascript:void(0)"><span class="glyphicon glyphicon-th-list"></span></a>
-                            </span>
-                            <ul class="dropdown-menu dropdown-menu-right" style="margin-top:5px">
-                                <li ng-repeat="prop in typeProperties"  class="small" style="font-weight:normal;padding:2px 10px">{{prop}}</li>
-                            </ul>
-                        </span>
-                    </td>
-                </tr></table>
-            </div>
-            <div style="margin:0 10px 8px 5px">
-                <table style="width:100%"><tr>
-                    <td>
-                        <input type="text" placeholder="Search" ng-model="assetSearch" class="form-control" ng-change="searchForAsset()" style="border-radius:40px;">
-                    </td>
-                    <td class="text-right small" style="width:275px">
-                        <span style="padding:0 10px;">Limit</span>
-                        <span class="dropdown">
-                            <button class="dropdown-toggle btn btn-default btn-sm" data-toggle="dropdown">
-                                <span style="padding-right:10px">{{queryLimit}}</span><span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" style="margin-top:10px">
-                                <li ng-repeat="limit in [1000,2000,5000,'None']">
-                                    <a href="javascript:void(0)" ng-click="setQueryLimit(limit)">{{limit}}</a>
-                                </li>
-                            </ul>
-                        </span>
-                        <span style="padding:0 10px;">Showing</span>
-                        <span class="dropdown">
-                            <button class="dropdown-toggle btn btn-default btn-sm" data-toggle="dropdown">
-                                <span style="padding-right:10px">{{searchResultLimit}}</span><span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" style="margin-top:10px">
-                                <li ng-repeat="limit in [100,250,500,1000]" >
-                                    <a href="javascript:void(0)" ng-click="setSearchLimit(limit)">{{limit}}</a>
-                                </li>
-                            </ul>
-                        </span>
-                    </td>
-                    <td class="text-right" style="width:100px">
-                        <span style="font-size:11px;color:#999">Loaded : {{searchResults.length}}</span>
-                    </td>
-               </tr></table>
-            </div>
+    <div class="col-md-12" style="padding:0">
+        <div class="section-header text-right" style="padding-left:10px;padding-right:10px;border-bottom:1px solid #ddd;">
+            <table><tr>
+                <td style="padding-left:10px">{{assetType}}</td>
+                <td class="text-right small">
+                    <!--<a title="New {{assetType}}" class="btn btn-sm section-header-btn" ng-if="session!=null"><span class="glyphicon glyphicon-plus"></span></a>-->
+                    <span class="dropdown">
+                        <button class="btn btn-default rsrc-ctrl-btn" ng-if="session!=null" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon fa fa-th"></span>
+                            <div style="font-size:9px">Properties</div>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" style="margin-top:15px">
+                            <li ng-repeat="prop in typeProperties"  class="small" style="font-weight:normal;padding:2px 10px">{{prop}}</li>
+                        </ul>
+                    </span>
+                </td>
+            </tr></table>
+        </div>
+        <div style="margin:7px 20px;">
+            <table style="width:100%"><tr>
+                <td>
+                    <input type="text" placeholder="Search" ng-model="assetSearch" class="form-control" ng-change="searchForAsset()" style="border-radius:40px;">
+                </td>
+                <td class="text-right small" style="width:275px">
+                    <span style="padding:0 10px;">Limit</span>
+                    <span class="dropdown">
+                        <button class="dropdown-toggle btn btn-default btn-sm" data-toggle="dropdown">
+                            <span style="padding-right:10px">{{queryLimit}}</span><span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="margin-top:10px">
+                            <li ng-repeat="limit in [1000,2000,5000,'None']">
+                                <a href="javascript:void(0)" ng-click="setQueryLimit(limit)">{{limit}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                    <span style="padding:0 10px;">Showing</span>
+                    <span class="dropdown">
+                        <button class="dropdown-toggle btn btn-default btn-sm" data-toggle="dropdown">
+                            <span style="padding-right:10px">{{searchResultLimit}}</span><span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="margin-top:10px">
+                            <li ng-repeat="limit in [100,250,500,1000]" >
+                                <a href="javascript:void(0)" ng-click="setSearchLimit(limit)">{{limit}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                </td>
+                <td class="text-right" style="width:100px">
+                    <span style="font-size:11px;color:#999">Loaded : {{searchResults.length}}</span>
+                </td>
+           </tr></table>
+        </div>
+        
+        <div style="padding: 0 20px;border-top:1px solid #ddd">
             <div ng-if="searchLoading" style="padding:20px 0" class="text-center"><img src="imgs/loading.gif"></div>
-            <table style="width:100%;" class="table" ng-if="searchResults.length>0" id="asset-table">
+            <table class="table" ng-if="searchResults.length>0" id="asset-table">
                 <tr>
-                    <th></th>
+                    <th class="asset-table-header"></th>
                     <th class="asset-table-header" ng-click="sortBy='id'; reverseSort=!reverseSort">
                         ID <span ng-class="{'dropup': reverseSort && sortBy == 'id'}"><span class="caret"></span></span>
                     </th>

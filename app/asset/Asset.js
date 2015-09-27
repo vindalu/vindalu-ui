@@ -146,6 +146,15 @@ angular.module('asset', [])
             $('#add-field-modal').modal('hide');
         }
 
+        $scope.isFieldDeletable = function(field) {
+            return ($scope.enforcedFields[field]==undefined) && 
+                (field != "updated_by") && (field != "created_by") && (field != "created_on");
+        }
+
+        $scope.isFieldValueObject = function(val) {
+            return typeof val === "object";
+        }
+
         $scope.deleteField = function(name) {
             $scope.fieldsToDelete.push(name);
         }
@@ -207,7 +216,7 @@ angular.module('asset', [])
         
             getResource();
 
-            $timeout(function() { $("[data-toggle='tooltip']").tooltip(); }, 1000);
+            //$timeout(function() { $("[data-toggle='tooltip']").tooltip(); }, 1000);
         }
         init();
     }

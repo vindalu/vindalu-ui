@@ -1,9 +1,6 @@
 <div class="row" style="margin:0">
-    <div class="col-md-3" style="padding:0">
-        <div asset-type-list></div>
-    </div>
-    <div class="col-md-9" style="padding:0;overflow-y:scroll;">
-        <div style="margin-left:20px">
+    <div class="col-md-12" style="padding:0;overflow-y:scroll;">
+        <div style="margin:0 20px">
             <div class="section-header">
                 <table><tr>
                     <td><a href="#/{{asset.type}}">{{asset.type}}</a> / <a href="#/{{asset.type}}/{{asset.id}}">{{asset.id}}</a></td>
@@ -12,17 +9,19 @@
             <div ng-if="versions.length < 1" class="text-center alert alert-warning">
                 <strong>No versions!</strong>  New versions are created upon edit including deletes.
             </div>
-            <div ng-repeat="version in versions">
-                <table style="width:100%" class="version-header">
-                    <tr>
-                        <td><strong>Version : {{version.version}}</strong><span ng-if="$first"> ( current )</span></td>
-                        <td class="text-right">
-                            <span>Updated By : </span><span style="color: #999;margin-right:10px;">{{version.updated_by}}</span>
-                            <span>Last Updated : </span><span style="color: #999">{{version.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
-                        </td>
-                    </tr>
-                </table>
-                <pre class="code-block">{{version.diff}}</pre>
+            <div style="margin-top:10px;">
+                <div ng-repeat="version in versions">
+                    <table style="width:100%" class="version-header">
+                        <tr>
+                            <td><strong>Version : {{version.version}}</strong><span ng-if="$first"> ( current )</span></td>
+                            <td class="text-right">
+                                <span>Updated By : </span><span style="color: #999;margin-right:10px;">{{version.updated_by}}</span>
+                                <span>Last Updated : </span><span style="color: #999">{{version.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <pre class="code-block">{{version.diff}}</pre>
+                </div>
             </div>
         </div>
     </div>

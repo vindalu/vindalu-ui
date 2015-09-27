@@ -1,26 +1,31 @@
-<div class="section-header">
-    <table><tr>
-        <td class="text-left">
-            <span>Asset Types </span>
-            <span style="color:#fff;background:#ccc;font-size:11px;font-weight:bold;margin:10px 0 10px 10px;padding:3px 7px;border-radius:30px">{{assetTypes.length}}</span>
+<div style="border-bottom:1px solid #606060">
+    <table style="width:100%">
+    <tr>
+        <td class="text-left" style="padding:17px 0;">
+            <span style="font-size: 20px;padding-left:20px;color:rgb(246, 183, 28);font-weight:bold">Resource Types</span><span style="margin-left:20px;color:#aaa;background:#666;font-size:12px;font-weight:bold;padding:0 15px;border-radius:30px;position:relative;top:-4px">{{assetTypes.length}}</span>
         </td>
         <td class="text-right"><img src="imgs/loading.gif" ng-if="isRefreshing"></td>
-        <td class="text-right">
-            <a class="btn btn-sm section-header-btn" href="javascript:void(0)" title="New Type" ng-if="isAdmin">
+        <td class="text-right" style="padding-right:20px"> 
+            <a href="javascript:void(0)" title="New Type" ng-if="isAdmin">
                 <span class="glyphicon glyphicon-plus"></span>
             </a>
-            <a class="btn btn-sm section-header-btn" href="javascript:void(0)" ng-click="refreshAssetTypeList()">
+            <a href="javascript:void(0)" ng-click="refreshAssetTypeList()" style="font-size:16px;" id="type-list-refresh-btn">
                 <span class="glyphicon glyphicon-refresh"></span>
             </a>
         </td>
-    </tr></table>
+    </tr>
+    </table>
 </div>
-<div style="margin-bottom:8px">
-   <input type="text" ng-model="assetTypeFilter" placeholder="Search" class="form-control asset-search-input" style="border-radius:40px;">
+
+<div id="rsrc-type-search" class="input-group input-group-lg" style="border-bottom:1px solid #606060" >
+   <input type="text" ng-model="assetTypeFilter" placeholder="Search" class="form-control">
+   <span class="input-group-addon" style="background:none;border:none;color:rgb(246, 183, 28);padding-right:20px"><span class="glyphicon glyphicon-search"></span></span>
 </div>
+
 <div class="list-group asset-type-list">
-    <a href="#/{{assetType.name}}" class="list-group-item" ng-repeat="assetType in assetTypes|filter:assetTypeFilter" ng-class="{'active-asset-type': assetType.name == activeAssetType}">
+    <a href="#/{{assetType.name}}" class="list-group-item" ng-repeat="assetType in assetTypes|orderBy:'name'|filter:assetTypeFilter">
         <span>{{assetType.name}}</span>
-        <span class="badge" style="background-color:#cecece">{{assetType.count}}</span>
+        <span class="badge" style="background-color:#666;color:#aaa">{{assetType.count}}</span>
+        <span ng-show="activeAssetType==assetType.name" style="color:#fff;position:absolute;right:-12px;font-size:34px" class="glyphicon glyphicon-triangle-left"></span>
     </a>
 </div>

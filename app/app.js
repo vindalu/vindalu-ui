@@ -118,6 +118,10 @@ app.filter('objectLength', function() {
                 $scope.userNotificationData = {};
             }, alertDisplayTime);
         } 
+
+        $scope.showNotification = function() {
+            return Object.keys($scope.userNotificationData).length > 0;
+        }
         
         $rootScope.$on('user.authenticated', function(e) {
             $scope.session = CredCache.getCreds();
