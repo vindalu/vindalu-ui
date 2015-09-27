@@ -59,6 +59,7 @@ ul {
 }
 
 #login-window-header,
+#login-btn.btn.btn-default:focus, 
 #login-btn.btn.btn-default:hover {
 	color: rgb(246, 183, 28);
 	border-color: rgb(246, 183, 28);
