@@ -1,12 +1,13 @@
 <div class="row" style="margin:0">
     <div class="col-md-12" style="padding:0;overflow-y:scroll;">
-        <div style="margin:0 20px">
-            <div class="section-header">
-                <table><tr>
-                    <td style="font-weight:bold"><a href="#/{{asset.type}}">{{asset.type}}</a> / <a href="#/{{asset.type}}/{{asset.id}}">{{asset.id}}</a> / <span style="opacity:0.65">versions</span> </td>
+        <div style="margin:0 30px">
+            <div class="section-header" style="min-height:60px;">
+                <table style="min-height:40px;"><tr>
+                    <td style="font-weight:bold">
+                        <a href="#/{{asset.type}}">{{asset.type}}</a> / <a href="#/{{asset.type}}/{{asset.id}}">{{asset.id}}</a> / <span style="opacity:0.65">versions</span>
+                    </td>
                 </tr></table>
             </div>
-
             <div version-timeseries-chart ng-model="versions" style="height: 100px"></div>
         </div>
         <div style="border-top:1px solid #ddd;margin-top:10px"></div>
@@ -16,7 +17,7 @@
             </div>
         </div>
 
-        <div style="margin-top:10px;">
+        <div style="margin:10px 0;">
             <div ng-repeat="version in versions" class="version-header">
                 <div class="row" style="margin:0;padding:10px 20px">
                     <!--
@@ -39,7 +40,7 @@
                     <div class="col-md-3 text-left" style="padding:0">
                         <span>Updated By : </span><span style="color: #999;margin-right:10px;">{{version.updated_by}}</span>
                     </div>
-                    <div class="col-md-4 text-right" style="padding:0">
+                    <div class="col-md-4 text-center" style="padding:0">
                         <span>Last Updated : </span><span style="color: #999">{{version.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
                     </div>
                 </div>
@@ -48,6 +49,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>

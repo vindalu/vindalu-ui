@@ -4,10 +4,16 @@
             <table><tr>
                 <td style="padding-left:10px;font-weight:bold">{{assetType}}</td>
                 <td class="text-right small">
+                    <button class="btn btn-default rsrc-ctrl-btn" ng-if="session!=null">
+                        <a href="#/{{assetType}}/new">
+                            <div class="glyphicon glyphicon-plus"></div>
+                            <div style="font-size:10px">{{assetType}}</div>
+                        </a>
+                    </button>
                     <span class="dropdown">
                         <button class="btn btn-default rsrc-ctrl-btn" class="dropdown-toggle" data-toggle="dropdown">
                             <span class="glyphicon fa fa-th"></span>
-                            <div style="font-size:9px">Properties</div>
+                            <div style="font-size:10px">Properties</div>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right" style="margin-top:15px">
                             <li ng-repeat="prop in typeProperties|orderBy"  class="small" style="font-weight:normal;padding:2px 10px">
@@ -65,13 +71,16 @@
                         {{sField}} <span ng-class="{'dropup': reverseSort && sortBy == 'data[sField]'}"><span class="caret"></span></span>
                     </th>
                     <th class="asset-table-header text-right" ng-click="sortBy='timestamp'; reverseSort=!reverseSort">
-                        Updated At <span ng-class="{'dropup': reverseSort && sortBy == 'timestamp' }"><span class="caret"></span></span>
+                        Last Modified <span ng-class="{'dropup': reverseSort && sortBy == 'timestamp' }"><span class="caret"></span></span>
                     </th>
                 </tr>
                 <tr ng-repeat="result in searchResults|orderBy:sortBy:reverseSort|limitTo:searchResultLimit">
                     <td class="small">{{$index+1}}</td>
                     <td><a href="#/{{assetType}}/{{result.id}}">{{result.id}}</a></td>
-                    <td class="text-center" ng-repeat="sField in showFields">{{result.data[sField]}}</td>
+                    <td class="text-center" ng-repeat="sField in showFields" ng-switch="sField">
+                        <span ng-switch-when="created_on" class="small">{{result.data.created_on|date:'HH:mm:ss MMM dd, yyyy'}}</span>
+                        <span ng-switch-default>{{result.data[sField]}}</span>
+                    </td>
                     <td class="text-right small">{{result.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</td>
                 </tr> 
             </table>

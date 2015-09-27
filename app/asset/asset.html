@@ -15,7 +15,7 @@
                                 <div style="font-size:10px">Versions</div>
                             </a>
                         </button>
-                        <button class="btn btn-default rsrc-ctrl-btn" ng-if="session!=null" ng-click="updateAsset()">
+                        <button class="btn btn-default rsrc-ctrl-btn" ng-if="session!=null" ng-click="upsertAsset()">
                             <div class="glyphicon glyphicon-save"></div>
                             <div style="font-size:10px">Save</div>
                         </button>
@@ -62,7 +62,7 @@
             </div>
             <div class="row" style="margin:0" ng-if="session!=null">
                 <div class="col-md-6 text-left" style="padding:0">
-                    <button title="Save" class="btn btn-default rsrc-ctrl-btn" ng-click="updateAsset()" >
+                    <button title="Save" class="btn btn-default rsrc-ctrl-btn" ng-click="upsertAsset()" >
                         <div class="glyphicon glyphicon-save"></div>
                         <div style="font-size:10px">Save</div>
                     </button>
@@ -74,7 +74,7 @@
                 <div class="col-md-6 text-right" style="padding:0">
                     <button class="btn btn-default rsrc-ctrl-btn" data-toggle="modal" data-target="#add-field-modal">
                         <div class="glyphicon glyphicon-plus"></div>
-                        <div style="font-size:10px">Field</div> 
+                        <div style="font-size:10px">Property</div> 
                     </button>
                 </div>
             </div>
@@ -119,6 +119,22 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-danger" ng-click="deleteAsset()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="new-rsrc-id-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">New resource</h4>
+      </div>
+      <div class="modal-body">
+          <input type="text" class="form-control" placeholder="ID" ng-model="newResourceId">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="setNewResourceId()">Ok</button>
       </div>
     </div>
   </div>

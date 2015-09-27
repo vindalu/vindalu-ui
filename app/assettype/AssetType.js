@@ -77,7 +77,7 @@ angular.module('asset.type', [])
         }
 
         $scope.togglePropertyVisibility = function(prop) {
-            if (prop == "id" || prop == "updated_by") return;
+            if (prop == "id" || prop == "updated_by" || prop == "timestamp") return;
 
             var idx = $scope.showFields.indexOf(prop);
             if (idx < 0 ) {
@@ -88,7 +88,7 @@ angular.module('asset.type', [])
         }
 
         $scope.isPropertyVisible = function(prop) {
-            if (prop == "id" || prop == "updated_by") return true;
+            if (prop == "id" || prop == "updated_by" ||prop == "timestamp") return true;
             
             return ($scope.showFields.indexOf(prop) >= 0);
         }

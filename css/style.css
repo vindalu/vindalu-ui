@@ -131,6 +131,7 @@ ul {
 	border-color: #ddd;
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 }
+
 #rsrc-type-search.input-group > input.form-control::-moz-placeholder {
 	color: #666;
 }
@@ -146,8 +147,9 @@ ul {
 	padding-left:20px;
 	border-radius: 0;
 }
+
 #rsrc-type-search:hover {
-	box-shadow: inset 0 2px 2px rgba(0,0,0,0.25);
+	box-shadow: inset 0 2px 2px rgba(0,0,0,0.35);
 }
 
 input.form-control.dynamic-input,
@@ -220,10 +222,11 @@ table.editable-table tr:hover a.remove-field-btn {
 
 .code-block {
 	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
-	color: #428bca;
+	color: rgb(246, 183, 28);
 	padding: 10px;
 	border-radius: 3px;
-	border: 1px solid #ccc;
+	border: 1px solid #555;
+	background: #666;
 }
 .code-block.details {
 	width:100%;
@@ -256,7 +259,7 @@ table.editable-table tr:hover a.remove-field-btn {
 }
 .versions-ctrl-btn {
 	font-size: 14px;
-	cursor: pointer;
+	cursor: default;
 }
 
 .versions-ctrl-btn:hover,

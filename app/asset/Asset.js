@@ -15,6 +15,15 @@ angular.module('asset', [])
             return $http.get(Configuration.api_prefix + "/" + assetType + '/' + assetId + '/versions?diff')
         }
 
+        var createResource = function(vRsrc) {
+            return $http({
+                url: Configuration.api_prefix + "/" + vRsrc.type + '/' + vRsrc.id,
+                method: 'POST',
+                headers: Authenticator.getAuthHeader(),
+                data: angular.toJson(vRsrc.data)
+            });
+        }
+
         var updateAssetDetails = function(assetType, assetId, assetData, deleteFields) {
             var delParams = "delete_fields="+deleteFields.join(",");
 
@@ -34,12 +43,36 @@ angular.module('asset', [])
             });   
         }
 
+        // Empty resource for UI
+        var newResource = function(rsrcType) {
+            // Add required fields
+            var d = {}, i = 0;
+            for(; i< Configuration.asset.required_fields.length; i++) {
+                d[Configuration.asset.required_fields[i]] = null;
+            }
+
+            // Default enforced fields to first value.
+            for(i in Configuration.asset.enforced_fields) {
+                if (i in d) {
+                    d[i] = Configuration.asset.enforced_fields[i][0];
+                }
+            }
+
+            return {
+                "id" : "new",
+                "type": rsrcType,
+                "data": d
+            }
+        }
+
         return {
             get                : getAssetDetails,
             getVersions        : getAssetVersions,
             getDiffs           : getAssetVersionDiffs,
             updateAssetDetails : updateAssetDetails,
             deleteAsset        : deleteAsset,
+            newResource        : newResource,
+            createResource     : createResource
         }
     }
 ])
@@ -103,44 +136,37 @@ angular.module('asset', [])
         link: function (scope, elem, attr, ctrl) {
             if (!ctrl) return;
 
-
             var makeChart = function(data)  {
-                console.log(ctrl.$modelValue);
                 var chart = c3.generate({
                     bindto: elem[0],
                     data: {
                         x: 'x',
                         columns: data,
-                        colors: {
-                            Versions: '#F6B71C'
-                        }
+                        colors: { Versions: '#F6B71C' }
                     },
                     axis: {
                         x: {
                             type: 'timeseries',
-                            tick: {
-                                format: '%m-%d %H:%M:%S',
-                                count: 6
-                            }
+                            tick: { format: '%m-%d %H:%M:%S', count: 6 }
                         },
-                        y: {
-                            show: false
-                        }
+                        y: { show: false }
                     },
                     tooltip: {
                         format: {
                             name: function(name, ratio, id, index) { return 'Version'; },
-                            value: function (value, ratio, id, index) { return ctrl.$modelValue[(ctrl.$modelValue.length-index)-1].version; }
+                            value: function (value, ratio, id, index) { 
+                                return ctrl.$modelValue[(ctrl.$modelValue.length-index)-1].version; 
+                            }
                         }
-                    }
+                    },
+                    legend: { show: false }
                 });
-
             }
 
             var extractData = function(d) {
                 var xs = [], ys= ["Versions"];
                 for(var i=0; i< d.length;i++) {
-                    // reverse version data
+                    // Reverse version data to graph correctly.
                     xs.unshift(new Date(d[i].timestamp));
                     ys.push(1);
                 }
@@ -168,6 +194,8 @@ angular.module('asset', [])
         $scope.newFieldName = "";
         $scope.newFieldType = "String";
 
+        $scope.newResourceId = "";
+
         $scope.fieldsToDelete = [];
 
         var getResource = function() {
@@ -187,6 +215,48 @@ angular.module('asset', [])
             });
         }
 
+        var _updateAsset = function() {
+             AssetService.updateAssetDetails($scope.asset.type, $scope.asset.id, $scope.asset.data, $scope.fieldsToDelete)
+            .success(function(rslt) {
+      
+                $scope.showUserNotification({
+                    status: 'success',
+                    data: rslt.id+ ' updated!'
+                });
+                getResource();
+
+            }).error(function(e) {
+                $scope.showUserNotification({
+                    status: 'danger',
+                    data: 'Update failed: ' + e
+                });
+                getResource();
+            });
+        }
+
+        var _createAsset = function() {
+            // IN Prog
+            for(var i=0;i< $scope.fieldsToDelete.length; i++) {
+                delete $scope.asset.data[$scope.fieldsToDelete[i]];
+            }
+
+             AssetService.createResource($scope.asset)
+            .success(function(rslt) {
+                
+                $scope.showUserNotification({
+                    status: 'success',
+                    data: rslt.id+ ' created!'
+                });
+                $location.url('/'+$scope.asset.type+'/'+$scope.asset.id);
+
+            }).error(function(e) {
+                $scope.showUserNotification({
+                    status: 'danger',
+                    data: 'Failed to create - ' + $scope.asset.id + ': ' + e
+                });
+            });
+        }
+
         $scope.addNewField = function() {
             switch($scope.newFieldType) {
                 case "Number":
@@ -200,7 +270,6 @@ angular.module('asset', [])
                     break;
             }
             
-        
             $scope.newFieldName = "";
             $('#add-field-modal').modal('hide');
         }
@@ -230,30 +299,18 @@ angular.module('asset', [])
             return false;
         }
 
-        $scope.updateAsset = function() {
+        $scope.upsertAsset = function() {
             if ( angular.equals(_originalAsset, $scope.asset) && $scope.fieldsToDelete.length < 1) {
                 $scope.showUserNotification({
                     status: 'danger',
                     data: 'No changes to save!'
                 });
             } else {
-                AssetService.updateAssetDetails($scope.asset.type, $scope.asset.id, $scope.asset.data, $scope.fieldsToDelete)
-                .success(function(rslt) {
-          
-                    $scope.showUserNotification({
-                        status: 'success',
-                        data: rslt.id+ ' updated!'
-                    });
-
-                    getResource();
-
-                }).error(function(e) {
-                    $scope.showUserNotification({
-                        status: 'danger',
-                        data: 'Update failed: ' + e
-                    });
-                    getResource();
-                });
+                if ($scope.newResourceId.length == 0) {
+                   _updateAsset();
+                } else {
+                   _createAsset();
+                }
             }
         }
 
@@ -271,11 +328,24 @@ angular.module('asset', [])
             });
         }
 
-        var init = function() {
-        
-            getResource();
+        $scope.setNewResourceId = function() {
+            if ($scope.newResourceId.length > 0) {
+                // Do more checking.
+                console.log($scope.newResourceId);
+                $scope.asset.id = $scope.newResourceId;
+                $('#new-rsrc-id-modal').modal('hide');
+            }
+        }
 
-            //$timeout(function() { $("[data-toggle='tooltip']").tooltip(); }, 1000);
+        var init = function() {
+            if ($routeParams.asset == "new") {
+                // new resource
+                _originalAsset = {};
+                $scope.asset = AssetService.newResource($routeParams.asset_type);
+                $timeout(function() { $('#new-rsrc-id-modal').modal('show');}, 600);
+            } else {
+                getResource();
+            }
         }
         init();
     }
