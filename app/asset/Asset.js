@@ -3,8 +3,12 @@ angular.module('asset', [])
     '$http', 'Configuration', 'Authenticator',
     function($http, Configuration, Authenticator){
 
-        var getAssetDetails = function(assetType, assetId) {
-            return $http.get(Configuration.api_prefix + "/" + assetType + '/' + assetId);
+        var getAssetDetails = function(assetType, assetId, version) {
+            if (version) {
+                return $http.get(Configuration.api_prefix + "/" + assetType + '/' + assetId + '?version=' + version.toString());    
+            } else {
+                return $http.get(Configuration.api_prefix + "/" + assetType + '/' + assetId);    
+            }
         }
 
         var getAssetVersions = function(assetType, assetId) {
@@ -198,13 +202,19 @@ angular.module('asset', [])
 
         $scope.fieldsToDelete = [];
 
-        var getResource = function() {
-            AssetService.get($routeParams.asset_type, $routeParams.asset)
+        var getResource = function(ver) {
+            AssetService.get($routeParams.asset_type, $routeParams.asset, ver)
             .success(function(rslt) {
-            
+                // Parse version from version id
+                if (ver) {
+                    var parts = rslt.id.split('.');
+                    parts.splice(parts.length-1,1);
+                    rslt.id = parts.join('.');
+                }
+
                 $scope.asset = rslt;
                 _originalAsset = angular.copy(rslt);
-            
+
             }).error(function(err) {
             
                 $scope.showUserNotification({
@@ -255,6 +265,10 @@ angular.module('asset', [])
                     data: 'Failed to create - ' + $scope.asset.id + ': ' + e
                 });
             });
+        }
+
+        $scope.canEditResource = function() {
+            return ($scope.session != null) && !('version' in $routeParams);
         }
 
         $scope.addNewField = function() {
@@ -331,7 +345,7 @@ angular.module('asset', [])
         $scope.setNewResourceId = function() {
             if ($scope.newResourceId.length > 0) {
                 // Do more checking.
-                console.log($scope.newResourceId);
+                //console.log($scope.newResourceId);
                 $scope.asset.id = $scope.newResourceId;
                 $('#new-rsrc-id-modal').modal('hide');
             }
@@ -343,8 +357,9 @@ angular.module('asset', [])
                 _originalAsset = {};
                 $scope.asset = AssetService.newResource($routeParams.asset_type);
                 $timeout(function() { $('#new-rsrc-id-modal').modal('show');}, 600);
+
             } else {
-                getResource();
+                getResource($routeParams.version);
             }
         }
         init();
@@ -359,17 +374,21 @@ angular.module('asset', [])
             id: $routeParams.asset
         };
 
-        AssetService.getDiffs($routeParams.asset_type, $routeParams.asset)
-        .success(function(rslt) {
-            $scope.versions = rslt;
-            console.log('Versions:', $scope.versions.length);
-        }).error(function(err) {
-            
-            $scope.showUserNotification({
-                status: 'danger',
-                data: 'Get failed: ' + err
-            });
+        var init = function() {
+            AssetService.getDiffs($routeParams.asset_type, $routeParams.asset)
+            .success(function(rslt) {
+                $scope.versions = rslt;
+                console.log('Versions:', $scope.versions.length);
+            }).error(function(err) {
+                
+                $scope.showUserNotification({
+                    status: 'danger',
+                    data: 'Get failed: ' + err
+                });
 
-        });
+            });
+        }
+
+        init();
     }
 ]);

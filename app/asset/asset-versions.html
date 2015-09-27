@@ -20,32 +20,28 @@
         <div style="margin:10px 0;">
             <div ng-repeat="version in versions" class="version-header">
                 <div class="row" style="margin:0;padding:10px 20px">
-                    <!--
-                    <div class="col-md-1" style="padding:0;text-align:center">
-                        <span class="versions-ctrl-btn">
-                            <div class="glyphicon fa fa-code"></div>
-                            <div style="font-size:10px">View</div>
-                        </span>
-                    </div>
-                    -->
-                    <div class="col-md-1" style="padding:0;text-align:center">
-                        <span class="versions-ctrl-btn" data-toggle="collapse" data-target="[data-diff=v{{version.version}}]" title="View diff">
+                    <div class="col-md-1" style="padding:0;text-align:left">
+                        <button class="btn btn-sm btn-default diff-btn" data-toggle="collapse" data-target="[data-diff=v{{version.version}}]">
                             <div class="glyphicon fa fa-code-fork"></div>
-                            <div style="font-size:10px">Diff</div>
-                        </span>
+                            <div style="font-size:10px">Diff</div>    
+                        </button>
                     </div>
-                    <div class="col-md-4" style="padding:0">
-                        <span style="padding:20px"><strong>Version : {{version.version}}</strong><span ng-if="$first"> ( current )</span></span>
+                    <div class="col-md-3" style="padding:5px 0">
+                        <a ng-if="$first" href="#/{{asset.type}}/{{asset.id}}"><strong>Version : {{version.version}}</strong> ( current )</a>
+                        <a ng-if="!$first" href="#/{{asset.type}}/{{asset.id}}/{{version.version}}"><strong>Version : {{version.version}}</strong></a>
                     </div>
-                    <div class="col-md-3 text-left" style="padding:0">
+                    <div class="col-md-6 text-left" style="padding:5px 0">
+                        <span>Last Modified : </span><span style="color: #999">{{version.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
+                    </div>
+                    <div class="col-md-2 text-left" style="padding:5px 0">
                         <span>Updated By : </span><span style="color: #999;margin-right:10px;">{{version.updated_by}}</span>
-                    </div>
-                    <div class="col-md-4 text-center" style="padding:0">
-                        <span>Last Updated : </span><span style="color: #999">{{version.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
                     </div>
                 </div>
                 <div data-diff="v{{version.version}}" class="collapse">
-                    <div style="margin:0 20px"><pre style="margin:0" class="code-block" >{{version.diff}}</pre></div>
+                    <div>
+                        <span class="glyphicon glyphicon-triangle-top" style="font-size:30px;color:#666;position:relative;top:-7px;left:24px;z-index:1"></span>
+                        <pre style="position:relative;top:-16px;" class="code-block">{{version.diff}}</pre>
+                    </div>
                 </div>
             </div>
         </div>

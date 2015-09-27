@@ -53,6 +53,9 @@ app.config(['$routeProvider',
         }).when('/:asset_type/:asset/versions', {
             templateUrl: 'app/asset/asset-versions.html',
             controller: 'assetVersionsController'
+        }).when('/:asset_type/:asset/:version', {
+            templateUrl: 'app/asset/asset.html',
+            controller: 'assetController'
         }).when('/', {
             templateUrl: 'app/root/root.html',
             controller: 'rootController'
@@ -95,7 +98,7 @@ app.filter('objectLength', function() {
         var _timer, alertDisplayTime = 3750;
 
         $scope.userNotificationData = {};
-
+        // Backend version
         $scope.vindaluVersion = Configuration.version
         // Where to redirect back to after login
         $scope.currUrlPath = "/";

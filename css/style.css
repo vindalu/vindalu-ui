@@ -96,7 +96,7 @@ ul {
 	padding: 5px 5px 10px 5px;
 }
 */
-/*.version-header,*/
+.version-header a,
 #asset-table tr>td>a,
 .section-header,
 .section-header > table,
@@ -105,6 +105,20 @@ ul {
 .section-header > table a {
 	color: #666;
 }
+/*
+.section-header.rsrc-version,
+.section-header.rsrc-version > table,
+.section-header.rsrc-version > table ul>li,
+.section-header.rsrc-version > table button,
+.section-header.rsrc-version > table a {
+	color: rgb(246, 183, 28);
+}
+
+.rsrc-version,
+td.rsrc-version>a:link {
+	color: rgb(246, 183, 28);
+}
+*/
 
 #sidebar {
 	position:fixed;
@@ -224,8 +238,9 @@ table.editable-table tr:hover a.remove-field-btn {
 	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
 	color: rgb(246, 183, 28);
 	padding: 10px;
-	border-radius: 3px;
+	border-radius: 0;
 	border: 1px solid #555;
+	margin: 0;
 	background: #666;
 }
 .code-block.details {
@@ -262,6 +277,7 @@ table.editable-table tr:hover a.remove-field-btn {
 	cursor: default;
 }
 
+.version-header a:hover,
 .versions-ctrl-btn:hover,
 ul>li>a.property-visible,
 .btn.rsrc-ctrl-btn:hover,
@@ -335,4 +351,24 @@ table#cluster-info td {
 .auth-disabled,
 .cluster-status.red {
 	color: #d9534f;
+}
+
+.btn.btn-sm.btn-default.diff-btn {
+	border-radius:50px;
+	background: none;
+	color: #666;
+}
+
+.btn.btn-sm.btn-default.diff-btn,
+.btn.btn-sm.btn-default.diff-btn:hover,
+.btn.btn-sm.btn-default.diff-btn:active,
+.btn.btn-sm.btn-default.diff-btn:focus {
+	outline: none;
+}
+
+.btn.btn-sm.btn-default.diff-btn:focus,
+.btn.btn-sm.btn-default.diff-btn:active,
+.btn.btn-sm.btn-default.diff-btn:hover{
+	color: rgb(246, 183, 28);
+	border: 1px solid rgb(246, 183, 28);
 }
