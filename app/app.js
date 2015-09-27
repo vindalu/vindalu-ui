@@ -88,14 +88,15 @@ app.filter('objectLength', function() {
     }
 })
 .controller('defaultController', [
-    '$rootScope', '$location', '$scope', 'CredCache', 'Authenticator', '$timeout',
-    function($rootScope, $location, $scope, CredCache, Authenticator, $timeout) {
+    '$rootScope', '$location', '$scope', 'Configuration', 'CredCache', 'Authenticator', '$timeout',
+    function($rootScope, $location, $scope, Configuration, CredCache, Authenticator, $timeout) {
         /* This is the top level controller (all encompassing) */
 
         var _timer, alertDisplayTime = 3750;
 
         $scope.userNotificationData = {};
 
+        $scope.vindaluVersion = Configuration.version
         // Where to redirect back to after login
         $scope.currUrlPath = "/";
         // Global session object

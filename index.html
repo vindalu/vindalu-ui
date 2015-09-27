@@ -33,13 +33,6 @@
             </div>
 
             <div id="sidebar">
-                <div style="height:60px;text-align:center;display:table;width:100%" title="Vindalu">
-                    <div style="vertical-align:middle;display:table-cell;font-size:20px">
-                        <a href="#/">
-                            <span class="glyphicon glyphicon-home"></span>
-                        </a>
-                    </div>
-                </div>
                 <div style="height:60px;text-align:center;display:table;width:100%" title="">
                     <div style="vertical-align:middle;display:table-cell;font-size:20px" ng-switch="session">
                         <a ng-switch-when="null" href="#/login?redirect={{currUrlPath}}">
@@ -57,6 +50,14 @@
                                 </li>
                             </ul>
                         </span>
+                    </div>
+                </div>
+                <div style="height:60px;text-align:center;display:table;width:100%" title="Vindalu">
+                    <div style="vertical-align:middle;display:table-cell;font-size:20px">
+                        <a href="#/">
+                            <div class="glyphicon glyphicon-home"></div>
+                            <div style="font-size:10px">{{vindaluVersion}}</div>
+                        </a>
                     </div>
                 </div>
                 <div style="height:60px;text-align:center;display:table;width:100%" title="Docs">
