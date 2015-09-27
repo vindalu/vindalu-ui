@@ -41,8 +41,8 @@ angular.module('asset.type', [])
     }
 }])
 .controller('assetTypeController', [
-    '$routeParams', '$scope', 'AssetTypeService',
-    function($routeParams, $scope, AssetTypeService) {
+    '$routeParams', '$scope', 'AssetTypeService', 'Configuration',
+    function($routeParams, $scope, AssetTypeService, Configuration) {
         /*
          *
          * Asset management for a given type. Asset listing.
@@ -60,6 +60,10 @@ angular.module('asset.type', [])
 
         $scope.sortBy = 'id';
         $scope.reverseSort = false;
+        
+        // Fields to show in table view
+        $scope.showFields = [].concat(Configuration.asset.required_fields);
+
 
         $scope.queryLimit = 1000;
 
@@ -70,6 +74,23 @@ angular.module('asset.type', [])
             }).error(function(err) {
                 console.error(err);
             })
+        }
+
+        $scope.togglePropertyVisibility = function(prop) {
+            if (prop == "id" || prop == "updated_by") return;
+
+            var idx = $scope.showFields.indexOf(prop);
+            if (idx < 0 ) {
+                $scope.showFields.push(prop);
+            } else {
+                $scope.showFields.splice(idx, 1);
+            }
+        }
+
+        $scope.isPropertyVisible = function(prop) {
+            if (prop == "id" || prop == "updated_by") return true;
+            
+            return ($scope.showFields.indexOf(prop) >= 0);
         }
 
         $scope.setSearchLimit = function(limit) {

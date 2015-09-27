@@ -254,6 +254,7 @@ table.editable-table tr:hover a.remove-field-btn {
 	font-weight: bold;
 }
 
+ul>li>a.property-visible,
 .btn.rsrc-ctrl-btn:hover,
 .undo-remove-field-btn:hover,
 .remove-field-btn:hover,
