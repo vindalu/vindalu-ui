@@ -91,11 +91,12 @@ ul {
 .version-header {
 	font-size: 12px;
 }
+/*
 .version-header tbody>tr>td {
 	padding: 5px 5px 10px 5px;
 }
-
-.version-header,
+*/
+/*.version-header,*/
 #asset-table tr>td>a,
 .section-header,
 .section-header > table,
@@ -253,7 +254,11 @@ table.editable-table tr:hover a.remove-field-btn {
 	color: #999;
 	font-weight: bold;
 }
+.versions-ctrl-btn {
+	font-size: 14px;
+}
 
+.versions-ctrl-btn:hover,
 ul>li>a.property-visible,
 .btn.rsrc-ctrl-btn:hover,
 .undo-remove-field-btn:hover,

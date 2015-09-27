@@ -2,14 +2,14 @@
 <div class="row" style="margin:0">
     <div class="col-md-12" style="padding:0;overflow-y:scroll;">
         <div class="graphs-panel">
-            <div class="section-header text-center" style="font-weight:bold;font-size:20px">Distribution</div>
+            <div class="section-header text-center" style="font-weight:bold;font-size:20px">Type Distribution</div>
             <div style="padding: 10px 0">
                 <div donut-chart class="root-chart"></div>
                 <div ng-if="currDataset.length<1" class="text-center alert alert-warning">
                     <strong>No Asset Types!</strong> Add an asset to view data.
                 </div>
             </div>
-            <div class="section-header text-center" style="font-weight:bold">Count</div>
+            <div class="section-header text-center" style="font-weight:bold">Type Count</div>
             <div style="padding: 10px 0">
                 <div bar-chart class="root-chart"></div>
                 <div ng-if="currDataset.length<1" class="text-center alert alert-warning">

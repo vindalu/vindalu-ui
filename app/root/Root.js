@@ -68,11 +68,15 @@ angular.module('app.root', [])
 
             var makeBarChart = function(chartData) {
                 var bdata = formatToBarC3(chartData);
+                console.log(bdata.data);
                 var barChart = c3.generate({
                     bindto: elem[0],
                     data: {
                         columns: [ bdata.data ] ,
-                        type : 'bar'
+                        type : 'bar',
+                        colors: {
+                            Types: '#F6B71C'
+                        }
                     },
                     axis: {
                         x: {

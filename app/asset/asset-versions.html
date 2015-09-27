@@ -3,26 +3,51 @@
         <div style="margin:0 20px">
             <div class="section-header">
                 <table><tr>
-                    <td><a href="#/{{asset.type}}">{{asset.type}}</a> / <a href="#/{{asset.type}}/{{asset.id}}">{{asset.id}}</a></td>
+                    <td style="font-weight:bold"><a href="#/{{asset.type}}">{{asset.type}}</a> / <a href="#/{{asset.type}}/{{asset.id}}">{{asset.id}}</a> / <span style="opacity:0.65">versions</span> </td>
                 </tr></table>
             </div>
-            <div ng-if="versions.length < 1" class="text-center alert alert-warning">
+
+            <div version-timeseries-chart ng-model="versions" style="height: 100px"></div>
+        </div>
+        <div style="border-top:1px solid #ddd"></div>
+        <div style="margin:0 20px">
+            <div ng-if="versions.length < 1" class="text-center alert alert-warning" style="margin-top:20px;">
                 <strong>No versions!</strong>  New versions are created upon edit including deletes.
             </div>
-            <div style="margin-top:10px;">
-                <div ng-repeat="version in versions">
-                    <table style="width:100%" class="version-header">
-                        <tr>
-                            <td><strong>Version : {{version.version}}</strong><span ng-if="$first"> ( current )</span></td>
-                            <td class="text-right">
-                                <span>Updated By : </span><span style="color: #999;margin-right:10px;">{{version.updated_by}}</span>
-                                <span>Last Updated : </span><span style="color: #999">{{version.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
-                            </td>
-                        </tr>
-                    </table>
-                    <pre class="code-block">{{version.diff}}</pre>
+        </div>
+
+        <div style="margin-top:10px;">
+            <div ng-repeat="version in versions" class="version-header">
+                <div class="row" style="margin:0;padding:10px 20px">
+                    <!--
+                    <div class="col-md-1" style="padding:0;text-align:center">
+                        <span class="versions-ctrl-btn">
+                            <div class="glyphicon fa fa-code"></div>
+                            <div style="font-size:10px">View</div>
+                        </span>
+                    </div>
+                    -->
+                    <div class="col-md-1" style="padding:0;text-align:center">
+                        <span class="versions-ctrl-btn" data-toggle="collapse" data-target="[data-diff=v{{version.version}}]" title="View diff">
+                            <div class="glyphicon fa fa-code-fork"></div>
+                            <div style="font-size:10px">Diff</div>
+                        </span>
+                    </div>
+                    <div class="col-md-4" style="padding:0">
+                        <span style="padding:20px"><strong>Version : {{version.version}}</strong><span ng-if="$first"> ( current )</span></span>
+                    </div>
+                    <div class="col-md-3 text-left" style="padding:0">
+                        <span>Updated By : </span><span style="color: #999;margin-right:10px;">{{version.updated_by}}</span>
+                    </div>
+                    <div class="col-md-4 text-right" style="padding:0">
+                        <span>Last Updated : </span><span style="color: #999">{{version.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
+                    </div>
+                </div>
+                <div data-diff="v{{version.version}}" class="collapse">
+                    <div style="margin:0 20px"><pre style="margin:0" class="code-block" >{{version.diff}}</pre></div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>

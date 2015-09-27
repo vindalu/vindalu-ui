@@ -96,6 +96,65 @@ angular.module('asset', [])
         }
     };
 }])
+.directive('versionTimeseriesChart', [function() {
+    return {
+        restrict: 'A',
+        require: '?ngModel',
+        link: function (scope, elem, attr, ctrl) {
+            if (!ctrl) return;
+
+
+            var makeChart = function(data)  {
+                console.log(ctrl.$modelValue);
+                var chart = c3.generate({
+                    bindto: elem[0],
+                    data: {
+                        x: 'x',
+                        columns: data,
+                        colors: {
+                            Versions: '#F6B71C'
+                        }
+                    },
+                    axis: {
+                        x: {
+                            type: 'timeseries',
+                            tick: {
+                                format: '%m-%d %H:%M:%S',
+                                count: 6
+                            }
+                        },
+                        y: {
+                            show: false
+                        }
+                    },
+                    tooltip: {
+                        format: {
+                            name: function(name, ratio, id, index) { return 'Version'; },
+                            value: function (value, ratio, id, index) { return ctrl.$modelValue[(ctrl.$modelValue.length-index)-1].version; }
+                        }
+                    }
+                });
+
+            }
+
+            var extractData = function(d) {
+                var xs = [], ys= ["Versions"];
+                for(var i=0; i< d.length;i++) {
+                    // reverse version data
+                    xs.unshift(new Date(d[i].timestamp));
+                    ys.push(1);
+                }
+                xs.unshift("x");
+                return [xs, ys];
+            }
+
+            scope.$watch(function(){return ctrl.$modelValue;}, function(n,o) {
+                makeChart(extractData(n));
+            });
+
+        }
+    };
+}])
 .controller('assetController', [
     '$scope', '$location', '$routeParams', 'AssetService', 'Configuration', '$timeout',
     function($scope, $location, $routeParams, AssetService, Configuration, $timeout) {
