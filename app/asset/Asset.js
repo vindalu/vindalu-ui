@@ -133,6 +133,26 @@ angular.module('asset', [])
         }
     };
 }])
+.directive('resourceIdInput', [function() {
+    return {
+        restrict: 'A',
+        require: '?ngModel',
+        link: function (scope, elem, attr, ctrl) {
+            if (!ctrl) return;
+
+            ctrl.$parsers.unshift(function(val) {
+
+                if (isResourceIdValid(val)) {
+                    ctrl.$setValidity('resourceIdInput', true);
+                } else {
+                    ctrl.$setValidity('resourceIdInput', false);
+                }
+
+                return val;
+            });
+        }
+    }
+}])
 .directive('versionTimeseriesChart', [function() {
     return {
         restrict: 'A',
@@ -343,7 +363,8 @@ angular.module('asset', [])
         }
 
         $scope.setNewResourceId = function() {
-            if ($scope.newResourceId.length > 0) {
+
+            if (isResourceIdValid($scope.newResourceId)) {
                 // Do more checking.
                 //console.log($scope.newResourceId);
                 $scope.asset.id = $scope.newResourceId;
@@ -356,7 +377,11 @@ angular.module('asset', [])
                 // new resource
                 _originalAsset = {};
                 $scope.asset = AssetService.newResource($routeParams.asset_type);
-                $timeout(function() { $('#new-rsrc-id-modal').modal('show');}, 600);
+
+                $timeout(function() { 
+                    var mdl = $('#new-rsrc-id-modal').modal({keyboard:false, backdrop:'static'});
+                    mdl.modal('show');
+                }, 500);
 
             } else {
                 getResource($routeParams.version);

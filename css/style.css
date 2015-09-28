@@ -119,18 +119,44 @@ td.rsrc-version>a:link {
 	color: rgb(246, 183, 28);
 }
 */
+#new-rsrc-id-modal .modal-footer,
+#new-rsrc-id-modal .modal-body {
+	background: #444;
+}
+
+#new-rsrc-id-modal .modal-header {
+	border-bottom:1px solid rgba(255,255,255,0.35);
+	border-radius: 5px 5px 0 0;
+}
+
+#new-rsrc-id-modal .modal-body {
+	padding: 20px;
+}
+
+#new-rsrc-id-modal .modal-footer {
+	border-top:1px solid rgb(246, 183, 28);
+	text-align: center;
+	padding: 20px;
+}
+
+#new-rsrc-id-modal .modal-header,
+#sidebar {
+	background:rgb(246, 183, 28);
+}
 
 #sidebar {
 	position:fixed;
 	top:0;left:0;
 	bottom:0;
 	width:60px;
-	background:rgb(246, 183, 28);
 	height:100%;
 }
+
+#new-rsrc-id-modal .modal-header,
 #sidebar a {
 	color: #444;
 }
+
 #sidebar a:hover {
 	color: #fff;
 }
@@ -191,6 +217,7 @@ textarea.form-control.dynamic-input:focus {
     resize:vertical;
 }
 
+input.form-control.ng-invalid.ng-invalid-resource-id-input,
 input.form-control.ng-invalid.ng-invalid-dynamic-input,
 textarea.form-control.ng-invalid.ng-invalid-dynamic-input {
 	border-color: #a94442 !important;
@@ -300,6 +327,7 @@ ul>li>a.property-visible,
 	box-shadow: none;
 }
 
+button#set-rsrc-id-btn,
 .btn.btn-default.rsrc-ctrl-btn:active,
 .btn.btn-default.rsrc-ctrl-btn:focus {
 	outline: none;
@@ -359,6 +387,12 @@ table#cluster-info td {
 	color: #666;
 }
 
+button#set-rsrc-id-btn {
+	color: #999;
+	border: 1px solid #777;
+	box-shadow: none;
+}
+
 .btn.btn-sm.btn-default.diff-btn,
 .btn.btn-sm.btn-default.diff-btn:hover,
 .btn.btn-sm.btn-default.diff-btn:active,
@@ -366,6 +400,8 @@ table#cluster-info td {
 	outline: none;
 }
 
+button#set-rsrc-id-btn:focus,
+button#set-rsrc-id-btn:hover,
 .btn.btn-sm.btn-default.diff-btn:focus,
 .btn.btn-sm.btn-default.diff-btn:active,
 .btn.btn-sm.btn-default.diff-btn:hover{

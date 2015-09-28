@@ -90,6 +90,19 @@ app.filter('objectLength', function() {
         return (gb/1024).toFixed(2).toString()+" TB";
     }
 })
+.directive('enterSubmit', [function() {
+    return {
+        restrict: 'A',
+        scope: {
+            action: '&'
+        },
+        link: function (scope, elem, attr) {
+            $(elem[0]).keypress(function(e) {
+                if ( e.which == 13) scope.action();
+            });
+        }
+    };
+}])
 .controller('defaultController', [
     '$rootScope', '$location', '$scope', 'Configuration', 'CredCache', 'Authenticator', '$timeout',
     function($rootScope, $location, $scope, Configuration, CredCache, Authenticator, $timeout) {
@@ -138,6 +151,11 @@ app.filter('objectLength', function() {
 
     }
 ]);
+
+function isResourceIdValid(id) {
+    return (id.search(/[&%;\,\s]/g) < 0)
+}
+
 /* Auto resize text area.  This is just the jquery elastic plugin.  Its copied here for performance reasons. */
 (function($){ 
     jQuery.fn.extend({  

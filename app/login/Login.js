@@ -153,10 +153,10 @@ angular.module('login', [])
             if (Authenticator.isSesstionAuthenticated()) {
                 performRedirect();
             }
-
+            /*
             $('#_password').keypress(function(e) {
                 if ( e.which == 13) $scope.attemptLogin(); 
-            });
+            });*/
         }
 
         init();

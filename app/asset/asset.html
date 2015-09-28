@@ -1,36 +1,37 @@
-<div class="row" style="margin:0">
+<div class="section-header" style="position:fixed;top:0;left:360px;right:0;background:#fff;z-index:1;padding:20px;">
+    <table><tr>
+        <td style="font-weight:bold">
+            <a style="padding-left:10px;" href="#/{{asset.type}}">{{asset.type}}</a> /<a ng-if="asset.data.version" href="#/{{asset.type}}/{{asset.id}}"> {{asset.id}}</a><span ng-if="!asset.data.version"> {{asset.id}}</span>
+        </td>
+        <td ng-if="asset.data.version"><b>Version : {{asset.data.version}} </b></td>
+        <td class="text-center" style="font-size:11px">
+            <span>Updated By : </span><span style="color:#999;margin-right:10px;">{{asset.data.updated_by}}</span>
+            <span>Last Updated : </span><span style="color:#999">{{asset.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
+        </td>
+        <td class="text-right">
+            <button class="btn btn-default rsrc-ctrl-btn">
+                <a href="#/{{asset.type}}/{{asset.id}}/versions">
+                    <div class="glyphicon glyphicon-fa fa fa-clone"></div>
+                    <div style="font-size:10px">Versions</div>
+                </a>
+            </button>
+            <span ng-if="canEditResource()">
+                <button class="btn btn-default rsrc-ctrl-btn" ng-click="upsertAsset()">
+                    <div class="glyphicon glyphicon-save"></div>
+                    <div style="font-size:10px">Save</div>
+                </button>
+                <button class="btn btn-default rsrc-ctrl-btn" data-toggle="modal" data-target="#delete-asset-modal" title="Delete">
+                    <div class="glyphicon glyphicon-trash"></div>
+                    <div style="font-size:10px">Delete</div>
+                </button>
+            </span>
+        </td>
+    </tr></table>
+</div>
+
+<div class="row" style="margin:80px 0 0 0">
     <div class="col-md-12" style="padding:0 30px 0 30px;">
         <div style="margin-bottom:15px">
-            <div class="section-header">
-                <table><tr>
-                    <td style="font-weight:bold">
-                        <a style="padding-left:10px;" href="#/{{asset.type}}">{{asset.type}}</a> /<a ng-if="asset.data.version" href="#/{{asset.type}}/{{asset.id}}"> {{asset.id}}</a><span ng-if="!asset.data.version"> {{asset.id}}</span>
-                    </td>
-                    <td ng-if="asset.data.version"><b>Version : {{asset.data.version}} </b></td>
-                    <td class="text-center" style="font-size:11px">
-                        <span>Updated By : </span><span style="color:#999;margin-right:10px;">{{asset.data.updated_by}}</span>
-                        <span>Last Updated : </span><span style="color:#999">{{asset.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span>
-                    </td>
-                    <td class="text-right">
-                        <button class="btn btn-default rsrc-ctrl-btn">
-                            <a href="#/{{asset.type}}/{{asset.id}}/versions">
-                                <div class="glyphicon glyphicon-fa fa fa-clone"></div>
-                                <div style="font-size:10px">Versions</div>
-                            </a>
-                        </button>
-                        <span ng-if="canEditResource()">
-                            <button class="btn btn-default rsrc-ctrl-btn" ng-click="upsertAsset()">
-                                <div class="glyphicon glyphicon-save"></div>
-                                <div style="font-size:10px">Save</div>
-                            </button>
-                            <button class="btn btn-default rsrc-ctrl-btn" data-toggle="modal" data-target="#delete-asset-modal" title="Delete">
-                                <div class="glyphicon glyphicon-trash"></div>
-                                <div style="font-size:10px">Delete</div>
-                            </button>
-                        </span>
-                    </td>
-                </tr></table>
-            </div>
             <div ng-if="!canEditResource()">
                 <table style="width:100%;font-size:13px;" class="table table-condensed table-bordered">
                     <tr ng-repeat="(attr, val) in asset.data">
@@ -133,13 +134,22 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">New resource</h4>
+        <h3 class="modal-title">New <i>{{asset.type}}</i> resource</h3>
       </div>
       <div class="modal-body">
-          <input type="text" class="form-control" placeholder="ID" ng-model="newResourceId">
+            <h4>
+                <div style="padding:0 5px">ID of <i>{{asset.type}}</i></div>
+            </h4>
+            <div style="padding:5px"></div>
+            <div>
+                <input type="text" class="form-control input-lg" placeholder="{{asset.type}} id" ng-model="newResourceId" enter-submit action="setNewResourceId()" style="border-color:#666;color:#ccc;background:#555" resource-id-input required>
+            </div>
+            <div style="padding:5px"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" ng-click="setNewResourceId()">Ok</button>
+        <button type="button" class="btn btn-default btn-lg" id="set-rsrc-id-btn"  ng-click="setNewResourceId()">
+            <span style="padding-right:10px;">Continue</span><span class="glyphicon glyphicon-arrow-right"></span>
+        </button>
       </div>
     </div>
   </div>

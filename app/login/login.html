@@ -4,7 +4,7 @@
 		<div id="login-window-body">
 			<input type="text" class="form-control" ng-model="credentials.username" required placeholder="Username">
 			<div style="padding:5px"></div>
-			<input type="password" placeholder="Password" class="form-control" ng-model="credentials.password" id="_password" required>
+			<input type="password" placeholder="Password" class="form-control" ng-model="credentials.password" id="_password" required enter-submit action="attemptLogin()">
 		</div>
 		<div id="login-window-footer">
 			<button id="login-btn" class="btn btn-default btn-sm" ng-click="attemptLogin()"><b>Login</b></button>
