@@ -121,7 +121,7 @@ angular.module('asset', [])
                         }
                     default:
                         ctrl.$setValidity('dynamicInput', true);
-                        return ctrl.$modelValue;
+                        return val;
                         break;
                 }
             });
@@ -219,6 +219,7 @@ angular.module('asset', [])
         $scope.newFieldType = "String";
 
         $scope.newResourceId = "";
+        $scope.autoAssignName = true; // when creating new resources to auto assign name field to id.
 
         $scope.fieldsToDelete = [];
 
@@ -368,6 +369,11 @@ angular.module('asset', [])
                 // Do more checking.
                 //console.log($scope.newResourceId);
                 $scope.asset.id = $scope.newResourceId;
+                if ($scope.autoAssignName) {
+                    $scope.asset.data.name = $scope.asset.id;
+                }
+                
+
                 $('#new-rsrc-id-modal').modal('hide');
             }
         }

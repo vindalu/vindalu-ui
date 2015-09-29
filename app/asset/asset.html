@@ -144,7 +144,9 @@
             <div>
                 <input type="text" class="form-control input-lg" placeholder="{{asset.type}} id" ng-model="newResourceId" enter-submit action="setNewResourceId()" style="border-color:#666;color:#ccc;background:#555" resource-id-input required>
             </div>
-            <div style="padding:5px"></div>
+            <div style="padding:10px" class="text-right">
+                <span style="padding-right:10px;">Auto assign name</span><input type="checkbox" ng-model="autoAssignName">
+            </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default btn-lg" id="set-rsrc-id-btn"  ng-click="setNewResourceId()">
