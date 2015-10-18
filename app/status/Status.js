@@ -124,7 +124,10 @@ angular.module('system.status',[])
 ])
 .filter('transportAddress', function() {
     return function(transport_address) {
-        return transport_address.split("/")[1].replace(/]$/, "");
+        if (transport_address)
+            return transport_address.split("/")[1].replace(/]$/, "");
+        else
+            return "";
     }
 });
 
