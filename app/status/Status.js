@@ -75,7 +75,7 @@ angular.module('system.status',[])
 
                         //} else {
                         //    $scope.cluster.nodes[nodename] = {};
-                        //}
+                        }
                     } catch(e) {
                         //$scope.cluster.nodes[nodename] = {};
                     }
