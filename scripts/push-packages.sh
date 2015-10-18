@@ -11,6 +11,7 @@ rpm_pkg=`ls ${build_dir} | grep x86_64.rpm`
 deb_pkg=`ls ${build_dir} | grep amd64.deb`
 
 rpm_repo="vindalu/vindalu/el/6"
+rpm7_repo="vindalu/vindalu/el/7"
 deb_repo="vindalu/vindalu/ubuntu/trusty"
 
 pc_bin="package_cloud"
@@ -50,6 +51,7 @@ main() {
 
     if [ "${rpm_pkg}" != "" ]; then 
         push_package $rpm_repo "${rpm_pkg}"
+        push_package $rpm7_repo "${rpm_pkg}"
     else
         echo "No .RPM's found!"
     fi
