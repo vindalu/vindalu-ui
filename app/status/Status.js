@@ -62,22 +62,22 @@ angular.module('system.status',[])
             }).always(function(obj, status, xhr) {
                 $scope.$apply(function() {
                     if (status == 'error') {
-                        $scope.cluster.nodes[nodename] = {};
+                        //$scope.cluster.nodes[nodename] = {};
                         return;
                     }
                     try {
                         if (obj.version && obj.version !== null)  {
                             for (var k in $scope.cluster.nodes) {
                                 if (nodename == getIpFromTransportAddr($scope.cluster.nodes[k].transport_address)) {
-                                    $scope.cluster.nodes[nodename].config = obj;    
+                                    $scope.cluster.nodes[k].config = obj;    
                                 }
                             }
 
-                        } else {
-                            $scope.cluster.nodes[nodename] = {};
-                        }
+                        //} else {
+                        //    $scope.cluster.nodes[nodename] = {};
+                        //}
                     } catch(e) {
-                        $scope.cluster.nodes[nodename] = {};
+                        //$scope.cluster.nodes[nodename] = {};
                     }
                 });
             });
