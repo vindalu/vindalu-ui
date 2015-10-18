@@ -128,7 +128,7 @@ angular.module('login', [])
         }
 
         var resetLoginHeader = function() {
-            $scope.loginWindowHeader = "Vindaloo "+Configuration.version;
+            $scope.loginWindowHeader = "Vindalu "+Configuration.version;
         }
 
         $scope.attemptLogin = function() {
