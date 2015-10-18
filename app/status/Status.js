@@ -67,7 +67,12 @@ angular.module('system.status',[])
                     }
                     try {
                         if (obj.version && obj.version !== null)  {
-                            $scope.cluster.nodes[nodename] = obj;
+                            for (var k in $scope.cluster.nodes) {
+                                if (nodename == getIpFromTransportAddr($scope.cluster.nodes[k].transport_address)) {
+                                    $scope.cluster.nodes[nodename].config = obj;    
+                                }
+                            }
+
                         } else {
                             $scope.cluster.nodes[nodename] = {};
                         }
