@@ -257,6 +257,7 @@ angular.module('asset', [])
                 getResource();
 
             }).error(function(e) {
+                // TODO: check token expiration
                 $scope.showUserNotification({
                     status: 'danger',
                     data: 'Update failed: ' + e
@@ -281,6 +282,7 @@ angular.module('asset', [])
                 $location.url('/'+$scope.asset.type+'/'+$scope.asset.id);
 
             }).error(function(e) {
+                // TODO: check token expiration
                 $scope.showUserNotification({
                     status: 'danger',
                     data: 'Failed to create - ' + $scope.asset.id + ': ' + e
@@ -355,7 +357,7 @@ angular.module('asset', [])
                 $('#delete-asset-modal').modal('hide');
                 $timeout(function () { $location.url("/"+$scope.asset.type); }, 1000);
             }).error(function(err) {
-                
+                // TODO: check token expiration
                 $scope.showUserNotification({
                     status: 'danger',
                     data: 'Delete failed: ' + err

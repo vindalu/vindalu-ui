@@ -2,43 +2,39 @@
 <table class="table" style="margin-bottom:0" id="cluster-info">
     <tr>
         <td style="padding:15px 20px">
-            <div style="font-size:16px;">Cluster : <span class="cluster-status {{cluster.health.status}}">{{cluster.state.cluster_name}}</span></div>
+            <div style="font-size:16px;">Cluster : <span class="cluster-status {{cluster.health.status}}">{{cluster.cluster_name}}</span></div>
         </td>
-        <td style="vertical-align:middle">
+        <td style="vertical-align:middle;" class="text-center">
             <div class="small">Data to Total Nodes : {{cluster.health.number_of_data_nodes}} / {{cluster.health.number_of_nodes}}</div>
         </td>
-        <td style="vertical-align:middle">
+        <td style="vertical-align:middle;padding:0 20px" class="text-right">
             <div class="small">Primary to Total Shards : <span style="color:#428bca">{{cluster.health.active_primary_shards}}</span> / {{cluster.health.active_shards}}</div>
-        </td>
-        <td class="text-right" style="vertical-align:middle;padding:0 20px;">
-            <span class="small">Version : {{cluster.state.version}}</span>
         </td>
     </tr>
 </table>
 <table class="table">
     <tr>
-        <th style="padding:13px 20px;">Node</th>
-        <th style="padding:13px">Elasticsearch Node</th>
-        <th style="padding:13px 20px;text-align:center;">Shards</th>
+        <th style="padding:13px 20px;">Vindalu</th>
+        <th style="padding:13px;" colspan="2">Elasticsearch</th>
     </tr>
-    <tr ng-repeat="(node_id, node) in cluster.state.nodes" ng-class="{'bg-danger': !cluster.nodes[node.ip_addr].version}">
+    <tr ng-repeat="(node_id, node) in cluster.nodes" ng-class="{'bg-danger': !cluster.nodes[node_id].config.version}">
         <td style="padding:0 20px;vertical-align:middle;text-align:left">
-            <div style="padding:5px 0"><span style="color:#666">Version</span> : {{cluster.nodes[node.ip_addr].version}}</div>
-            <div style="padding:5px 0"><span style="color:#666">GNATSD Version</span> : {{cluster.nodes[node.ip_addr].gnatsd_version}}</div>
-            <div style="padding:5px 0"> <span style="color:#666">API Endpoint</span> : {{cluster.nodes[node.ip_addr].api_prefix}}</div>
-            <div style="padding:5px 0"> <span style="color:#666">Auth</span> : {{cluster.nodes[node.ip_addr].auth_type}}</div>
+            <div style="padding:5px 0"><span style="color:#666">Version</span> : {{node.config.version}}</div>
+            <div style="padding:5px 0"> <span style="color:#666">API Endpoint</span> : {{node.config.api_prefix}}</div>
+            <div style="padding:5px 0"> <span style="color:#666">Auth</span> : {{node.config.auth_type}}</div>
+            <div style="padding:5px 0"><span style="color:#666">GNATSD Version</span> : {{node.config.gnatsd_version}}</div>
         </td>
         <!--ng-class="{'master-node': node_id == cluster.state.master_node}"-->
         <td style="padding:10px;vertical-align:middle">
-            <div style="color: #666">{{node.name}} <small style="color:#888" ng-if="node_id == cluster.state.master_node">( master )</small></div>
+            <div style="color: #666">{{node.name}} <small style="color:#888" ng-if="node_id == cluster.master_node">( master )</small></div>
             <div style="padding-left:5px;padding-top:3px">
                 <div><small class="small" style="padding: 5px 0">id : {{node_id}}</small></div>
-                <div><small class="small" style="padding: 5px 0">address : {{node.transport_address|transportIp}}</small></div>
+                <div><small class="small" style="padding: 5px 0">address : {{node.transport_address|transportAddress}}</small></div>
             </div>
         </td>
         <td style="padding:0px 20px">
             <div class="list-group list-group-sm shards-list" style="margin-bottom:0">
-                <div ng-repeat="routing_node in cluster.state.routing_nodes.nodes[node_id]" class="list-group-item small" ng-class="{'primary-shard': routing_node.primary}">
+                <div ng-repeat="routing_node in cluster.routing_nodes.nodes[node_id]" class="list-group-item small" ng-class="{'primary-shard': routing_node.primary}">
                     <div>
                         <span style="color: #666">{{routing_node.index}}</span><span class="pull-right"><span ng-if="routing_node.primary">( primary ) </span> shard: {{routing_node.shard}}</span>
                     </div>

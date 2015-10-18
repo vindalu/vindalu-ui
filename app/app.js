@@ -153,7 +153,7 @@ app.filter('objectLength', function() {
 ]);
 
 function isResourceIdValid(id) {
-    return (id.search(/[&%;\,\s]/g) < 0)
+    return (id.search(/[&%;\,\s,\/]/g) < 0)
 }
 
 /* Auto resize text area.  This is just the jquery elastic plugin.  Its copied here for performance reasons. */

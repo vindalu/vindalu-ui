@@ -11,9 +11,14 @@ angular.module('system.status',[])
         return $http.get(Configuration.raw_endpoint + '/_cluster/state');   
     }
 
+    var getClusterStatus = function() {
+        return $http.get('/status');   
+    }
+
     return {
         getHealth: getHealth,
-        getState: getState
+        getState: getState,
+        getClusterStatus: getClusterStatus
     };
 }])
 .directive('clusterHealth', [function() {
@@ -40,15 +45,17 @@ angular.module('system.status',[])
         $scope.cluster = {};
 
         var getNodeAddrs = function() {
+            //console.log($scope.cluster.nodes);
             // Get address of nodes from ess cluster health call
-            var nodeNames = [];
+            var nodeAddrs = [];
             for(var k in $scope.cluster.nodes) {
-                nodeNames.push(k);
+                var ip = getIpFromTransportAddr($scope.cluster.nodes[k].transport_address);
+                nodeAddrs.push(ip);
             }
-            return nodeNames;
+            return nodeAddrs;
         }
 
-        var getNodeConfig = function(nodename) {
+        var fetchNodeConfig = function(nodename) {
             $.ajax({
                 url:'http://'+nodename+'/config',
                 method: 'GET'
@@ -71,16 +78,6 @@ angular.module('system.status',[])
             });
         }
 
-        var getNodeMap = function() {
-            var nodes = {};
-            for(var k in $scope.cluster.state.nodes) {
-                var addr = $scope.cluster.state.nodes[k].transport_address.split("/")[1].split(":")[0];
-                nodes[addr] = $scope.cluster.state.nodes[k];
-                $scope.cluster.state.nodes[k].ip_addr = addr;
-            }
-            return nodes;
-        }
-
         var assignConfigs = function(cfgs) {
             console.log($scope.cluster.nodes);
             for (var k in cfgs) {
@@ -91,26 +88,26 @@ angular.module('system.status',[])
             }
         }
 
-        var getClusterState = function() {
+        var getClusterInfo = function() {
             // Get cluster state
-            ESSClusterHealth.getState()
+            //ESSClusterHealth.getState()
+            ESSClusterHealth.getClusterStatus()
             .success(function(rslt) {
-                
-                $scope.cluster.state = rslt;
-                $scope.cluster.nodes = getNodeMap();
-
+                $scope.cluster = rslt;
                 // Get cluster member configs
-                var nodeNames = getNodeAddrs();
-                if (nodeNames.length > 1) {
-                    for(var j=0; j<nodeNames.length; j++) {
-                        getNodeConfig(nodeNames[j]);
+                var nodeAddrs = getNodeAddrs();
+
+                if (nodeAddrs.length > 1) {
+                    for (var j=0; j < nodeAddrs.length; j++) {
+                        fetchNodeConfig(nodeAddrs[j]);
                     }
                 } else {
                     for (var k in $scope.cluster.nodes) {
-                        $scope.cluster.nodes[k] = Configuration;
+                        $scope.cluster.nodes[k].config = Configuration;
                         break;
                     }
                 }
+                //console.log($scope.cluster);
             }).error(function(err) {
                 console.log(err);
             });
@@ -118,21 +115,21 @@ angular.module('system.status',[])
 
         var init = function() {
             // Get cluster health
-            ESSClusterHealth.getHealth()
-            .success(function(rslt) {
-                $scope.cluster.health = rslt;
-            }).error(function(err) {
-                console.log(err);
-            });
+            getClusterInfo();
             
-            getClusterState();
         }
 
         init();
     }
 ])
-.filter('transportIp', function() {
+.filter('transportAddress', function() {
     return function(transport_address) {
         return transport_address.split("/")[1].replace(/]$/, "");
     }
 });
+
+// Helper functions //
+// Get ip address from ess transport address
+var getIpFromTransportAddr = function(transport_address) {
+        return transport_address.split("/")[1].replace(/]$/, "").split(":")[0];
+}
