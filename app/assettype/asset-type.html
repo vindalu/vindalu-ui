@@ -1,87 +1,119 @@
 <div class="row" style="margin:0">
     <div class="col-md-12" style="padding:0">
-        <div class="section-header text-right" style="padding-left:10px;padding-right:10px;border-bottom:1px solid #ddd;">
-            <table><tr>
+        <div class="section-header text-right" style="padding: 13px 10px 13px 10px;">
+            <table ><tr>
                 <td style="padding-left:10px;font-weight:bold">{{assetType}}</td>
                 <td class="text-right small">
-                    <button class="btn btn-default rsrc-ctrl-btn" ng-if="session!=null">
+                    <button class="btn btn-default rsrc-ctrl-btn" ng-if="session!=null" title="Add {{assetType}}">
                         <a href="#/{{assetType}}/new">
                             <div class="glyphicon glyphicon-plus"></div>
-                            <div style="font-size:10px">{{assetType}}</div>
                         </a>
                     </button>
-                    <span class="dropdown">
-                        <button class="btn btn-default rsrc-ctrl-btn" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon fa fa-th"></span>
-                            <div style="font-size:10px">Properties</div>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right" style="margin-top:15px">
-                            <li ng-repeat="prop in typeProperties|orderBy"  class="small" style="font-weight:normal;padding:2px 10px">
-                                <a href="javascript:void(0)" ng-click="togglePropertyVisibility(prop)" ng-class="{'property-visible': isPropertyVisible(prop)}">{{prop}}</a>
-                            </li>
-                        </ul>
-                    </span>
                 </td>
             </tr></table>
         </div>
-        <div style="margin:7px 20px;">
-            <table style="width:100%"><tr>
-                <td>
-                    <input type="text" placeholder="Search" ng-model="assetSearch" class="form-control" ng-change="searchForAsset()" style="border-radius:40px;">
-                </td>
-                <td class="text-right small" style="width:275px">
-                    <span style="padding:0 10px;">Limit</span>
-                    <span class="dropdown">
-                        <button class="dropdown-toggle btn btn-default btn-sm" data-toggle="dropdown">
-                            <span style="padding-right:10px">{{queryLimit}}</span><span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" style="margin-top:10px">
-                            <li ng-repeat="limit in [1000,2000,5000,'None']">
-                                <a href="javascript:void(0)" ng-click="setQueryLimit(limit)">{{limit}}</a>
-                            </li>
-                        </ul>
-                    </span>
-                    <span style="padding:0 10px;">Showing</span>
-                    <span class="dropdown">
-                        <button class="dropdown-toggle btn btn-default btn-sm" data-toggle="dropdown">
-                            <span style="padding-right:10px">{{searchResultLimit}}</span><span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" style="margin-top:10px">
-                            <li ng-repeat="limit in [100,250,500,1000]" >
-                                <a href="javascript:void(0)" ng-click="setSearchLimit(limit)">{{limit}}</a>
-                            </li>
-                        </ul>
-                    </span>
-                </td>
-                <td class="text-right" style="width:100px">
-                    <span style="font-size:11px;color:#999">Loaded : {{searchResults.length}}</span>
-                </td>
-           </tr></table>
+        <div aggr-field-chart class="collapse">
+            <div style="padding:20px;border-top:1px solid #ddd;">
+                <div class="row" style="margin:0">
+                    <div class="col-md-6">
+                        <label  style="padding-top:5px;font-size:18px;font-weight:500">Resource Distribution</label>
+                        <div class="small" style="padding-left:5px;color:#777">by {{selectedProperty}}</div>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <select id="distrib-chart-prop" ng-options="prop for prop in typeProps|orderBy" ng-model="selectedProperty"></select><span class="glyphicon fa fa-sort" style="position:relative;left:-20px;font-size:12px"></span>
+                    </div>
+                </div>
+                <div bar-chart dataset="aggrDataset" color-patterns="aggrColorPatterns" chart-title="selectedProperty" style="margin-top: 20px;margin-bottom:10px;height:250px"></div>
+            </div>
         </div>
-        
-        <div style="padding: 0 20px;border-top:1px solid #ddd">
-            <div ng-if="searchLoading" style="padding:20px 0" class="text-center"><img src="imgs/loading.gif"></div>
-            <table class="table" ng-if="searchResults.length>0" id="asset-table">
+        <div class="text-center" style="position:relative;border-top:1px solid #ddd">
+            <span style="padding:5px;background:#fff;position:absolute;top:-15px;z-index:3">
+                <button style="border-radius:20px;width:22px;height:22px;border:1px solid #ddd;background:#fff;outline:none;" ng-click="showChart=!showChart">
+                    <span class="glyphicon" style="font-size:10px;" ng-class="{'glyphicon-chevron-down': !showChart, 'glyphicon-chevron-up': showChart}"></span>
+                </button>
+            </span>
+        </div>
+
+        <div class="row" id="search-by-type-bar" style="margin:0">
+            <div class="col-md-7">
+                <div style="position:relative;">
+                    <span style="position:absolute;top:15px;left:20px;color:#aaa;font-size:18px">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                    <input type="text" placeholder="Search" ng-model="assetSearch" class="input-lg" ng-change="searchForAsset()" style="padding-left:60px;border:none;width:100%;height:48px;outline:none">
+                </div>
+            </div>
+            <div class="col-md-5 text-right" style="padding-right:30px">
+                <table style="width:100%">
+                    <tr><td style="display:table-cell;vertical-align:middle;height:48px" class="small text-right">
+                        <span ng-if="searchLoading" style="padding:0 20px" class="text-center"><img src="imgs/loading.gif"></span>
+                        <span style="padding:0 10px;font-size:11px;font-weight:bold">
+                            <span style="color:#999;padding-right:5px">Loaded : {{searchResults.length}}</span>
+                        </span>
+                        <span style="padding:0 10px;font-size:11px;font-weight:bold">
+                            <span style="color:#999;padding-right:5px;">Show : </span><select class="query-show-limits" ng-options="num for num in [100,250,500,1000]" ng-model="searchResultLimit"></select><span class="glyphicon fa fa-sort"></span>
+                        </span>
+                        <span style="padding:0 10px;font-size:11px;font-weight:bold">
+                            <span style="color:#999;padding-right:5px;">Query Limit : </span><select class="query-show-limits" ng-options="num for num in [1000,2000,5000,'None']" ng-model="queryLimit"></select><span style="padding-left:5px"><span class="glyphicon fa fa-sort"></span></span>
+                        </span>
+                    </td><tr>
+                </table>
+            </div>
+        </div>
+
+        <div style="padding:20px;border-top:1px solid #ddd">
+<!--
+<div class="list-group">
+  <a class="list-group-item" ng-repeat="resource in searchResults|orderBy|limitTo:searchResultLimit" href="#/{{assetType}}/{{resource.id}}" >
+    <h4 class="list-group-item-header">
+        <span>{{resource.id}}</span>
+    </h4>
+    <p class="list-group-item-text">
+        <div class="small">Name : {{resource.name}}</div>
+        <div class="small">Created On : {{resource.data.created_on|date:'HH:mm:ss MMM dd, yyyy'}}</div>
+        <div class="small">Created By : {{resource.data.created_by}}</div>
+        <div class="small"><span style="color: #999">Updated On : </span><span>{{resource.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</span></div>
+        <div class="small"><span>Updated By : {{resource.data.updated_by}}</span></div>
+    </p>
+  </a>
+</div>
+-->
+            <table class="table table-bordered" ng-if="searchResults.length>0" id="asset-table" style="font-size:12px">
                 <tr>
-                    <th class="asset-table-header"></th>
-                    <th class="asset-table-header" ng-click="sortBy='id'; reverseSort=!reverseSort">
+                    <th class="asset-table-header">
+                        
+                        <span class="dropdown">
+                            <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style="border:none;outline:none">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" style="margin-top:10px">
+                                <li ng-repeat="prop in typeProperties|orderBy" style="font-weight:normal;padding:2px 10px">
+                                    <a href="javascript:void(0)" ng-click="togglePropertyVisibility(prop)" ng-class="{'property-visible': isPropertyVisible(prop)}">{{prop}}</a>
+                                </li>
+                            </ul>
+                        </span>
+
+                    </th>
+                    <th class="asset-table-header" ng-click="sortTableColumn('id')" style="text-align:left">
                         ID <span ng-class="{'dropup': reverseSort && sortBy == 'id'}"><span class="caret"></span></span>
                     </th>
-                    <th ng-repeat="sField in showFields" class="asset-table-header text-center" ng-click="sortBy='data[sField]'; reverseSort=!reverseSort">
-                        {{sField}} <span ng-class="{'dropup': reverseSort && sortBy == 'data[sField]'}"><span class="caret"></span></span>
+                    <th ng-repeat="sField in showFields" class="asset-table-header" ng-click="sortTableColumn('data.'+sField)">
+                        {{sField}} <span ng-class="{'dropup': reverseSort && sortBy == 'data.'+sField}"><span class="caret"></span></span>
                     </th>
-                    <th class="asset-table-header text-right" ng-click="sortBy='timestamp'; reverseSort=!reverseSort">
+                    <th class="asset-table-header" ng-click="sortTableColumn('timestamp')">
                         Last Modified <span ng-class="{'dropup': reverseSort && sortBy == 'timestamp' }"><span class="caret"></span></span>
                     </th>
                 </tr>
                 <tr ng-repeat="result in searchResults|orderBy:sortBy:reverseSort|limitTo:searchResultLimit">
-                    <td class="small">{{$index+1}}</td>
-                    <td><a href="#/{{assetType}}/{{result.id}}">{{result.id}}</a></td>
+                    <td class="text-center">{{$index+1}}</td>
+                    <td style="padding:0">
+                        <a href="#/{{assetType}}/{{result.id}}"><div style="padding:8px">{{result.id}}</div></a>
+                    </td>
                     <td class="text-center" ng-repeat="sField in showFields" ng-switch="sField">
-                        <span ng-switch-when="created_on" class="small">{{result.data.created_on|date:'HH:mm:ss MMM dd, yyyy'}}</span>
+                        <span ng-switch-when="created_on">{{result.data.created_on|date:'HH:mm:ss MMM dd, yyyy'}}</span>
                         <span ng-switch-default>{{result.data[sField]}}</span>
                     </td>
-                    <td class="text-right small">{{result.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</td>
+                    <td class="text-center">{{result.timestamp|date:'HH:mm:ss MMM dd, yyyy'}}</td>
                 </tr> 
             </table>
         </div>

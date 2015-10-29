@@ -1,3 +1,4 @@
+
 .btn.btn-sm.section-header-btn {
 	border-radius: 30px;
 	height: 34px;
@@ -91,11 +92,12 @@ ul {
 .version-header {
 	font-size: 12px;
 }
-/*
-.version-header tbody>tr>td {
-	padding: 5px 5px 10px 5px;
-}
-*/
+
+table>tbody>tr>th.asset-table-header,
+#search-by-type-bar,
+.glyphicon.fa.fa-sort,
+select.query-show-limits,
+div[aggr-field-chart],
 .version-header a,
 #asset-table tr>td>a,
 .section-header,
@@ -299,9 +301,15 @@ table.editable-table tr:hover a.remove-field-btn {
 	color: #999;
 	font-weight: bold;
 }
+
 .versions-ctrl-btn {
 	font-size: 14px;
 	cursor: default;
+}
+
+#asset-table tr>th:hover,
+#asset-table tr:hover>td {
+	background: #eee;
 }
 
 .version-header a:hover,
@@ -340,7 +348,8 @@ table>tbody>tr>th.asset-table-header {
 	transition: all 0.35s ease;
 	border-top:none;
 	cursor:default;
-	padding: 10px 20px;
+	padding: 10px 8px;
+	text-align: center;
 }
 
 .section-header {
@@ -408,3 +417,31 @@ button#set-rsrc-id-btn:hover,
 	color: rgb(246, 183, 28);
 	border: 1px solid rgb(246, 183, 28);
 }
+
+select#distrib-chart-prop {
+	-webkit-appearance:none;
+	-moz-appearance:none;
+	appearance:none;
+	outline: none;
+	cursor: pointer;
+	padding: 5px 30px 5px 15px;
+	border-radius: 30px;
+	background: none;
+	border-color: #ddd;
+}
+
+select.query-show-limits {
+	-webkit-appearance:none;
+	-moz-appearance:none;
+	appearance:none;
+	outline: none;
+	cursor: pointer;
+	background: none;
+	border: none;
+}
+/*
+#search-by-type-bar:hover input,
+#search-by-type-bar:hover {
+	box-shadow: inset 0 2px 2px rgba(0,0,0,0.055);
+}
+*/

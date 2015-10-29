@@ -34,10 +34,15 @@ angular.module('asset.type', [])
         return dfd.promise;
     }
 
+    var aggregate = function(rsrcType, field) {
+        return $http.get(Configuration.api_prefix+'/'+rsrcType+'?aggregate='+field);
+    }
+
     return {
         list: list,
         search: searchForAssetOfType,
-        getTypeProperties: getTypeProperties
+        getTypeProperties: getTypeProperties,
+        aggregate: aggregate
     }
 }])
 .controller('assetTypeController', [
@@ -62,7 +67,7 @@ angular.module('asset.type', [])
         $scope.reverseSort = false;
         
         // Fields to show in table view
-        $scope.showFields = [].concat(Configuration.asset.required_fields);
+        $scope.showFields = ["updated_by", "created_on"].concat(Configuration.asset.required_fields);
 
 
         $scope.queryLimit = 1000;
@@ -95,6 +100,15 @@ angular.module('asset.type', [])
 
         $scope.setSearchLimit = function(limit) {
             $scope.searchResultLimit = limit;
+        }
+
+        $scope.sortTableColumn = function(field) {
+            if ($scope.sortBy == field) {
+                $scope.reverseSort = !$scope.reverseSort;    
+            } else {
+                $scope.sortBy = field;
+                $scope.reverseSort = false;
+            }
         }
 
         $scope.searchForAsset = function() {
@@ -166,6 +180,57 @@ angular.module('asset.type', [])
             scope.$on('$routeChangeSuccess', function(evt, nxt, curr) {
                 scope.activeAssetType = $routeParams.asset_type;
             });
+        }
+    }
+}])
+.directive('aggrFieldChart', ['$routeParams', 'AssetTypeService', function($routeParams, AssetTypeService) {
+    return {
+        restrict: 'A',     
+        link: function(scope, elem, attr) {
+
+            scope.selectedProperty = "updated_by";
+            scope.typeProps = [];
+
+            scope.aggrDataset = [];
+            scope.aggrColorPatterns = DEFAULT_CHART_COLOR_PATTERNS;
+
+            scope.showChart = false;
+
+            // Collapsible chart
+            var cpsChart = $(elem[0]).collapse({toggle:false});
+
+            var getAggregate = function() {
+                AssetTypeService.aggregate($routeParams.asset_type, scope.selectedProperty)
+                .success(function(rslt) {
+                   scope.aggrDataset = rslt;
+                   //console.log(scope.aggrDataset);
+                }).error(function(err) {
+                    console.error(err);
+                });
+            }
+
+            AssetTypeService.getTypeProperties($routeParams.asset_type)
+            .success(function(rslt){
+                scope.typeProps = rslt;
+                //console.log(scope.typeProps);
+            }).error(function(err) {
+                console.log(err)
+            });
+
+            scope.$watch(function() {return scope.selectedProperty;}, function(n, o) {
+                if (n) getAggregate();
+            });
+
+            scope.$watch(function() {return scope.showChart;}, function(n, o) {
+                if (n) {
+                    cpsChart.collapse('show');
+                    //todo: re-render
+                } else {
+                    cpsChart.collapse('hide');
+                }
+            });
+
+
         }
     }
 }]);

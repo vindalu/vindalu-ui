@@ -11,7 +11,7 @@
             </div>
             <div class="section-header text-center" style="font-weight:bold">Type Count</div>
             <div style="padding: 10px 0">
-                <div bar-chart class="root-chart"></div>
+                <div bar-chart dataset="currDataset" color-patterns="colorPatterns" chart-title="'Types'" class="root-chart"></div>
                 <div ng-if="currDataset.length<1" class="text-center alert alert-warning">
                     <strong>No Asset Types!</strong> Add an asset to view data.
                 </div>
