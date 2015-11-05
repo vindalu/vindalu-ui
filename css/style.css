@@ -107,20 +107,7 @@ div[aggr-field-chart],
 .section-header > table a {
 	color: #666;
 }
-/*
-.section-header.rsrc-version,
-.section-header.rsrc-version > table,
-.section-header.rsrc-version > table ul>li,
-.section-header.rsrc-version > table button,
-.section-header.rsrc-version > table a {
-	color: rgb(246, 183, 28);
-}
 
-.rsrc-version,
-td.rsrc-version>a:link {
-	color: rgb(246, 183, 28);
-}
-*/
 #new-rsrc-id-modal .modal-footer,
 #new-rsrc-id-modal .modal-body {
 	background: #444;
