@@ -35,17 +35,27 @@
         </div>
 
         <div class="row" id="search-by-type-bar" style="margin:0">
-            <div class="col-md-7">
-                <div style="position:relative;">
-                    <span style="position:absolute;top:15px;left:20px;color:#aaa;font-size:18px">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </span>
-                    <input type="text" placeholder="Search" ng-model="assetSearch" class="input-lg" ng-change="searchForAsset()" style="padding-left:60px;border:none;width:100%;height:48px;outline:none">
+            <div class="col-md-6" style="padding-left:18px;padding-right:0">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" style="cursor:default;color:#999">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </div>
+                    <div class="input-group-btn">
+                        <button type="button" id="search-attr" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight:bold">{{searchAttribute}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="prop in typeProperties|orderBy" style="font-weight:normal;padding:2px 10px">
+                                <a href="javascript:void(0)" ng-click="searchForAsset(prop)">{{prop}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <input type="text" class="form-control" ng-model="assetSearch" ng-change="searchForAsset()" style="border:none;outline:none;box-shadow:none;">
                 </div>
             </div>
-            <div class="col-md-5 text-right" style="padding-right:30px">
+            <div class="col-md-6 text-right" style="padding-left:0;padding-right:20px">
                 <table style="width:100%">
-                    <tr><td style="display:table-cell;vertical-align:middle;height:48px" class="small text-right">
+                    <tr><td style="display:table-cell;vertical-align:middle;height:46px" class="small text-right">
                         <span ng-if="searchLoading" style="padding:0 20px" class="text-center"><img src="imgs/loading.gif"></span>
                         <span style="padding:0 10px;font-size:11px;font-weight:bold">
                             <span style="color:#999;padding-right:5px">Loaded : {{searchResults.length}}</span>
@@ -80,8 +90,8 @@
                 <tr>
                     <th class="asset-table-header">
                         
-                        <span class="dropdown">
-                            <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style="border:none;outline:none">
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style="background:none;border:none;outline:none;box-shadow:none">
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" style="margin-top:10px">
@@ -89,7 +99,7 @@
                                     <a href="javascript:void(0)" ng-click="togglePropertyVisibility(prop)" ng-class="{'property-visible': isPropertyVisible(prop)}">{{prop}}</a>
                                 </li>
                             </ul>
-                        </span>
+                        </div>
 
                     </th>
                     <th class="asset-table-header" ng-click="sortTableColumn('id')" style="text-align:left">

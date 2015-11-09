@@ -62,6 +62,7 @@ angular.module('asset.type', [])
         $scope.searchResults = [];
         $scope.searchLoading = false;
         $scope.searchResultLimit = 250;
+        $scope.searchAttribute = "name";
 
         $scope.sortBy = 'id';
         $scope.reverseSort = false;
@@ -72,10 +73,31 @@ angular.module('asset.type', [])
 
         $scope.queryLimit = 1000;
 
+        var typeHasProperty = function(prop) {
+            for(var i=0; i < $scope.typeProperties.length; i++) {
+                if (prop == $scope.typeProperties[i]) return true;
+            }
+            return false;
+        }
+
+        var setDefaultSearchAttribute = function() {
+            if (!typeHasProperty("name")) {
+                if (!typeHasProperty("Name")) {
+                    $scope.searchAttribute = "id";
+                } else {
+                    $scope.searchAttribute = "Name";
+                    $scope.showFields = ["Name"].concat($scope.showFields);
+                }
+            } else {
+                $scope.showFields = ["name"].concat($scope.showFields);
+            }
+        }
+
         var setTypeProperties = function(aType) {
             AssetTypeService.getTypeProperties(aType)
             .success(function(rslt) {
                 $scope.typeProperties = rslt;
+                setDefaultSearchAttribute();
             }).error(function(err) {
                 console.error(err);
             })
@@ -111,15 +133,17 @@ angular.module('asset.type', [])
             }
         }
 
-        $scope.searchForAsset = function() {
-            
+        $scope.searchForAsset = function(optionalProp) {
+            $scope.searchAttribute = optionalProp ? optionalProp : $scope.searchAttribute;
+
             if ( $scope.assetSearch == "" ) {
                 $scope.searchResults = [];
                 $scope.searchLoading = false;
                 return;
             }
 
-            var q = {id: $scope.assetSearch};
+            var q = {};
+            q[$scope.searchAttribute] = $scope.assetSearch;
             if ($scope.queryLimit != 'None') {
                 q.size = $scope.queryLimit;
             }
