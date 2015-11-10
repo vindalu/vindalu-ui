@@ -57,12 +57,11 @@
                             <span ng-switch-when="created_on" style="padding:0 5px">{{val|date:'HH:mm:ss MMM dd, yyyy'}}</span>
                             <span ng-switch-when="created_by" style="padding:0 5px">{{val}}</span>
                             <span ng-switch-default>
-                                <select ng-if="enforcedFields[attr]&&enforcedFields[attr]!=null" ng-options="field for field in enforcedFields[attr]" ng-model="asset.data[attr]" class="form-control input-sm"></select>
+                                <select ng-if="enforcedFields[attr]&&enforcedFields[attr]!=null" ng-options="field for field in enforcedFields[attr]" ng-model="asset.data[attr]" class="form-control input-sm" style="border:none;border-radius:0px;box-shadow:none;"></select>
                                 <textarea ng-if="enforcedFields[attr]==undefined && isFieldValueObject(val)" type="text" class="form-control dynamic-input" ng-model="asset.data[attr]" dynamic-input></textarea>
                                 <input ng-if="enforcedFields[attr]==undefined && !isFieldValueObject(val)" type="text" class="form-control dynamic-input" ng-model="asset.data[attr]" dynamic-input></input>
                             </span>
                         </td>
-                    
                     </tr>
                 </table>
             </div>
