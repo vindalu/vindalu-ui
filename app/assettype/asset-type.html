@@ -20,10 +20,16 @@
                         <div class="small" style="padding-left:5px;color:#777">by {{selectedProperty}}</div>
                     </div>
                     <div class="col-md-6 text-right">
-                        <select id="distrib-chart-prop" ng-options="prop for prop in typeProps|orderBy" ng-model="selectedProperty"></select><span class="glyphicon fa fa-sort" style="position:relative;left:-20px;font-size:12px"></span>
+                        <div style="position:relative"><!--position:relative;left:-20px;-->
+                            <select id="distrib-chart-prop" ng-options="prop for prop in typeProps|orderBy" ng-model="selectedProperty"></select><span class="glyphicon fa fa-sort" style="font-size:12px;position:absolute;top:10px;right:10px"></span>
+                        </div>
+                        <div style="font-size:10px;padding:5px 7px 0 0" title="Check the box if the value of the field is an integer">
+                            <span>Force X-Axis as Integer: </span>
+                            <input type="checkbox" style="background:none;margin:0px;height:10px;width:10px;" ng-model="nameAsInt">
+                        </div>
                     </div>
                 </div>
-                <div bar-chart dataset="aggrDataset" color-patterns="aggrColorPatterns" chart-title="selectedProperty" style="margin-top: 20px;margin-bottom:10px;height:250px"></div>
+                <div bar-chart dataset="aggrDataset" color-patterns="aggrColorPatterns" chart-title="selectedProperty" style="margin-top: 20px;margin-bottom:10px;height:250px" name-as-int="nameAsInt"></div>
             </div>
         </div>
         <div class="text-center" style="position:relative;border-top:1px solid #ddd">

@@ -67,6 +67,7 @@ angular.module('asset.type', [])
         $scope.sortBy = 'id';
         $scope.reverseSort = false;
         
+        $scope.nameAsInt = false;
         // Fields to show in table view
         $scope.showFields = ["updated_by", "created_on"].concat(Configuration.asset.required_fields);
 

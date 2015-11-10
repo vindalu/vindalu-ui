@@ -109,7 +109,8 @@ app.filter('objectLength', function() {
         scope: {
             dataset: '=',
             colorPatterns: '=',
-            chartTitle: '='
+            chartTitle: '=',
+            nameAsInt: '='
         },
         link: function(scope, elem, attr, ctrl) {
 
@@ -117,11 +118,20 @@ app.filter('objectLength', function() {
                 var arr = [title],
                     cats = [];
                 
-                for (var i =0; i < data.length; i++) {
-                    arr.push(data[i].count)
-                    cats.push(data[i].name)
+                console.log(scope.nameAsInt);
+                if (scope.nameAsInt) {
+                    //console.log('as int');
+                    for (var i =0; i < data.length; i++) {
+                        arr.push(data[i].count)
+                        cats.push(Math.round(data[i].name))
+                    }
+                } else {
+                    for (var i =0; i < data.length; i++) {
+                        arr.push(data[i].count)
+                        cats.push(data[i].name)
+                    }
                 }
-                
+
                 return {
                     categories: cats,
                     data: arr
@@ -146,7 +156,8 @@ app.filter('objectLength', function() {
                             tick: {
                                 multiline:false,
                                 rotate: 75
-                            }
+                            },
+                            height: 75
                         }
                     },
                     tooltip: {
@@ -172,6 +183,10 @@ app.filter('objectLength', function() {
                     //console.log('>', scope.dataset, scope.chartTitle, scope.colorPatterns);
                     if (!val || val.length < 1) return;
                     makeBarChart(scope.chartTitle, val);
+                });
+
+                scope.$watch(function() {return scope.nameAsInt}, function(val) {
+                    makeBarChart(scope.chartTitle, scope.dataset); 
                 });
             }
 
