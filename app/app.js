@@ -118,7 +118,7 @@ app.filter('objectLength', function() {
                 var arr = [title],
                     cats = [];
                 
-                console.log(scope.nameAsInt);
+                //console.log(scope.nameAsInt);
                 if (scope.nameAsInt) {
                     //console.log('as int');
                     for (var i =0; i < data.length; i++) {

@@ -58,13 +58,13 @@ angular.module('asset.type', [])
        
         $scope.typeProperties = [];
 
-        $scope.assetSearch = "";
+        $scope.assetSearch = ".*";
         $scope.searchResults = [];
         $scope.searchLoading = false;
         $scope.searchResultLimit = 250;
         $scope.searchAttribute = "name";
 
-        $scope.sortBy = 'id';
+        $scope.sortBy = "id";
         $scope.reverseSort = false;
         
         $scope.nameAsInt = false;
@@ -94,11 +94,16 @@ angular.module('asset.type', [])
             }
         }
 
-        var setTypeProperties = function(aType) {
+        /* 
+            Fetch type properties and set default search property. Perform a search 
+            after setting defaults
+        */
+        var initTypeProperties = function(aType) {
             AssetTypeService.getTypeProperties(aType)
             .success(function(rslt) {
                 $scope.typeProperties = rslt;
                 setDefaultSearchAttribute();
+                $scope.searchForAsset();
             }).error(function(err) {
                 console.error(err);
             })
@@ -168,9 +173,7 @@ angular.module('asset.type', [])
         }
 
         var init = function() {
-            $scope.assetSearch = ".*";
-            $scope.searchForAsset();
-            setTypeProperties($routeParams.asset_type);
+            initTypeProperties($routeParams.asset_type);
         }
 
         init();
@@ -254,8 +257,6 @@ angular.module('asset.type', [])
                     cpsChart.collapse('hide');
                 }
             });
-
-
         }
     }
 }]);
