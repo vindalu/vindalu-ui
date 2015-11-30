@@ -1,5 +1,5 @@
 NAME = vindalu-ui
-VERSION = 0.2.11
+VERSION = 0.2.12
 DESCRIPTION = Vindalu web UI
 URL = https://github.com/vindalu/vindalu-ui
 
